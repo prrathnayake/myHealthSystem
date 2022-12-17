@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "746124379024",
+    "project_id": "myhealth-92372",
+    "storage_bucket": "myhealth-92372.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:746124379024:android:2495fde4c84db55e222915",
+        "android_client_info": {
+          "package_name": "com.example.e_health"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "746124379024-lbt880qjq2ajb06rim9ulslt1r41jis6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA6S7zwG1Lq7BB1G0RwOQrf_QK1uPWsJiw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "746124379024-lbt880qjq2ajb06rim9ulslt1r41jis6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

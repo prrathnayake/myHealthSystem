@@ -1,0 +1,67 @@
+import 'package:e_health/screens/home_screen/home_screen.dart';
+import 'package:e_health/screens/newFeed_screen/news_feed_screen.dart';
+import 'package:flutter/material.dart';
+
+class BottomBar extends StatefulWidget {
+  const BottomBar({super.key});
+
+  @override
+  State<BottomBar> createState() => _BottomBarState();
+}
+
+class _BottomBarState extends State<BottomBar> {
+  int _selectedIndex = 0;
+  static final List<Widget> _widgetOptions = <Widget>[
+    const HomeScreen(),
+    const NewsFeedScreen(),
+    const Text('News Feed'),
+    const Text('News Feed'),
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: _widgetOptions[_selectedIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Colors.white,
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
+        selectedItemColor: Colors.blueGrey,
+        type: BottomNavigationBarType.fixed,
+        unselectedItemColor: const Color(0xFF526480),
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home_outlined),
+            label: "Home",
+            activeIcon: Icon(Icons.home_rounded),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.search_outlined),
+            label: "News Feed",
+            activeIcon: Icon(Icons.search_rounded),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.event_outlined,
+            ),
+            label: "Schedule",
+            activeIcon: Icon(Icons.event),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person_outline_outlined),
+            label: "Feed",
+            activeIcon: Icon(Icons.person_rounded),
+          ),
+        ],
+      ),
+    );
+  }
+}
