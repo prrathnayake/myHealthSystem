@@ -27,6 +27,21 @@ class AuthMethods {
   }) async {
     String res = "Some Error Occurred";
     try {
+      RegExp regexNIC = RegExp(r'^(?:19|20)?\d{2}[0-9]{10}|[0-9]{9}[x|X|v|V]$');
+      RegExp regexMobile = RegExp(r'^[0]{1}[7]{1}[01245678]{1}[0-9]{7}$');
+
+      if (!regexNIC.hasMatch(nic)) {
+        return res = "Pleace enter valid NIC number";
+      }
+
+      if (!regexMobile.hasMatch(mobile)) {
+        return res = "Pleace enter valid mobile number";
+      }
+
+      if (password != comfirmPassword) {
+        return res = "Pleace make sure your passwords match";
+      }
+
       if (email.isNotEmpty ||
           password.isNotEmpty ||
           username.isNotEmpty ||
