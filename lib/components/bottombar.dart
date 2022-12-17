@@ -1,5 +1,7 @@
 import 'package:e_health/screens/home_screen/home_screen.dart';
 import 'package:e_health/screens/newFeed_screen/news_feed_screen.dart';
+import 'package:e_health/screens/profile_screen/profile_screen.dart';
+import 'package:e_health/screens/schedule_screen/schedule_screen.dart';
 import 'package:flutter/material.dart';
 
 class BottomBar extends StatefulWidget {
@@ -14,8 +16,8 @@ class _BottomBarState extends State<BottomBar> {
   static final List<Widget> _widgetOptions = <Widget>[
     const HomeScreen(),
     const NewsFeedScreen(),
-    const Text('News Feed'),
-    const Text('News Feed'),
+    const ScheduleScreen(),
+    const ProfileScreen(),
   ];
 
   void _onItemTapped(int index) {

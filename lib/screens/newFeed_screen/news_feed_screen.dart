@@ -17,7 +17,7 @@ class _NewsFeedScreenState extends State<NewsFeedScreen> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(color: CustomColors.bgColorLite),
+      decoration: const BoxDecoration(),
       child: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(20),
@@ -33,14 +33,10 @@ class _NewsFeedScreenState extends State<NewsFeedScreen> {
                     },
                     child: Text(
                       'Medical Updates',
-                      style: TextStyles.textHeader1,
+                      style: TextStyles.textHeader1.copyWith(fontSize: 40),
                     ),
                   )
                 ],
-              ),
-              const SizedBox(height: 20),
-              SingleChildScrollView(
-                child: Column(children: const [NewsCard()]),
               ),
             ],
           ),

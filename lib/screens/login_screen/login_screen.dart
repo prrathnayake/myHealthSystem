@@ -1,9 +1,13 @@
+import 'dart:convert';
+
 import 'package:e_health/components/bottombar.dart';
 import 'package:e_health/screens/signup_screen/signup_screen.dart';
 import 'package:e_health/utils/colors.dart';
 import 'package:e_health/utils/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:e_health/models/user.dart' as model;
 
 import '../../resources/auth_methods.dart';
 
@@ -18,6 +22,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool _isLoading = false;
+  String username = '';
 
   @override
   void dispose() {
@@ -33,9 +38,15 @@ class _LoginScreenState extends State<LoginScreen> {
     String res = await AuthMethods().userSignIn(
         email: _emailController.text, password: _passwordController.text);
     if (res == 'success') {
+      model.User userCredentials = await AuthMethods().getUserDetails();
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String json = jsonEncode(userCredentials);
+      prefs.setString('userCredentials', json);
+
       setState(() {
         _isLoading = false;
       });
+
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (context) => const BottomBar()),
       );
