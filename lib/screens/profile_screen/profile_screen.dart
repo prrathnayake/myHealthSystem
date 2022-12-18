@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:e_health/screens/account_details_screen/account_details_screen.dart';
 import 'package:e_health/utils/colors.dart';
 import 'package:e_health/utils/styles.dart';
 import 'package:flutter/material.dart';
@@ -88,6 +89,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           TextButton(
                             onPressed: () async {
                               await AuthMethods().signOut();
+                              SharedPreferences prefs =
+                                  await SharedPreferences.getInstance();
+                              await prefs.remove("userCredentials");
                               Navigator.of(context).pushReplacement(
                                   MaterialPageRoute(
                                       builder: (context) =>
@@ -127,83 +131,89 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            'Personal Details',
+                            'Profile',
                             style: TextStyles.textHeader2.copyWith(
                                 color: CustomColors.black, fontSize: 30),
                           ),
-                          IconButton(
-                            onPressed: () {},
-                            icon: const Icon(Icons.edit),
-                          )
                         ],
+                      ),
+                      const SizedBox(height: 10),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) =>
+                                  const AccountDetailsScreen()));
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 10, horizontal: 20),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  const Icon(Icons.manage_accounts),
+                                  const SizedBox(width: 10),
+                                  Text(
+                                    'Account details',
+                                    style: TextStyles.regulerText.copyWith(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 25,
+                                        color: CustomColors.black),
+                                  ),
+                                ],
+                              ),
+                              const Icon(Icons.arrow_forward_ios),
+                            ],
+                          ),
+                        ),
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 20, vertical: 10),
-                        child: Column(
+                            vertical: 10, horizontal: 20),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Row(
                               children: [
+                                const Icon(Icons.file_copy),
+                                const SizedBox(width: 10),
                                 Text(
-                                  'Username  - ',
-                                  style: TextStyles.textHeader2
-                                      .copyWith(color: CustomColors.black),
+                                  'Documents',
+                                  style: TextStyles.regulerText.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 25,
+                                      color: CustomColors.black),
                                 ),
-                                Text(
-                                  '${userCredentials['username']}',
-                                  style: TextStyles.textHeader2
-                                      .copyWith(color: CustomColors.black),
-                                )
                               ],
                             ),
-                            const SizedBox(height: 10),
-                            Row(
-                              children: [
-                                Text(
-                                  'email  - ',
-                                  style: TextStyles.textHeader2
-                                      .copyWith(color: CustomColors.black),
-                                ),
-                                Text(
-                                  '${userCredentials['email']}',
-                                  style: TextStyles.textHeader2
-                                      .copyWith(color: CustomColors.black),
-                                )
-                              ],
-                            ),
-                            const SizedBox(height: 10),
-                            Row(
-                              children: [
-                                Text(
-                                  'Mobile  - ',
-                                  style: TextStyles.textHeader2
-                                      .copyWith(color: CustomColors.black),
-                                ),
-                                Text(
-                                  '${userCredentials['mobile']}',
-                                  style: TextStyles.textHeader2
-                                      .copyWith(color: CustomColors.black),
-                                )
-                              ],
-                            ),
-                            const SizedBox(height: 10),
-                            Row(
-                              children: [
-                                Text(
-                                  'NIC  - ',
-                                  style: TextStyles.textHeader2
-                                      .copyWith(color: CustomColors.black),
-                                ),
-                                Text(
-                                  '${userCredentials['nic']}',
-                                  style: TextStyles.textHeader2
-                                      .copyWith(color: CustomColors.black),
-                                )
-                              ],
-                            ),
+                            const Icon(Icons.arrow_forward_ios),
                           ],
                         ),
                       ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 10, horizontal: 20),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                const Icon(Icons.lock_outline),
+                                const SizedBox(width: 10),
+                                Text(
+                                  'Change Password',
+                                  style: TextStyles.regulerText.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 25,
+                                      color: CustomColors.black),
+                                ),
+                              ],
+                            ),
+                            const Icon(Icons.arrow_forward_ios),
+                          ],
+                        ),
+                      )
                     ],
                   ),
                 ),

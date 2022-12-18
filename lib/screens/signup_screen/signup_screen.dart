@@ -1,5 +1,9 @@
+import 'dart:convert';
+
 import 'package:e_health/screens/login_screen/login_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:e_health/models/user.dart' as model;
 
 import '../../components/bottombar.dart';
 import '../../resources/auth_methods.dart';
@@ -53,6 +57,10 @@ class _SignupScreenState extends State<SignupScreen> {
         nic: _nicController.text,
         username: _usernameController.text);
     if (res == 'success') {
+      model.User userCredentials = await AuthMethods().getUserDetails();
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String json = jsonEncode(userCredentials);
+      prefs.setString('userCredentials', json);
       setState(() {
         _isLoading = false;
       });
