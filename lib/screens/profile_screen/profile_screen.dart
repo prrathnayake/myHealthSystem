@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:e_health/screens/account_details_screen/account_details_screen.dart';
+import 'package:e_health/screens/document_screen/document_screen.dart';
 import 'package:e_health/utils/colors.dart';
 import 'package:e_health/utils/styles.dart';
 import 'package:flutter/material.dart';
@@ -168,27 +169,33 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 10, horizontal: 20),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                const Icon(Icons.file_copy),
-                                const SizedBox(width: 10),
-                                Text(
-                                  'Documents',
-                                  style: TextStyles.regulerText.copyWith(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 25,
-                                      color: CustomColors.black),
-                                ),
-                              ],
-                            ),
-                            const Icon(Icons.arrow_forward_ios),
-                          ],
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => const DocumentScreen()));
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 10, horizontal: 20),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  const Icon(Icons.file_copy),
+                                  const SizedBox(width: 10),
+                                  Text(
+                                    'Documents',
+                                    style: TextStyles.regulerText.copyWith(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 25,
+                                        color: CustomColors.black),
+                                  ),
+                                ],
+                              ),
+                              const Icon(Icons.arrow_forward_ios),
+                            ],
+                          ),
                         ),
                       ),
                       Padding(
