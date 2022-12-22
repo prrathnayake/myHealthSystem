@@ -39,7 +39,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: CustomColors.lightBlue,
+      color: Colors.indigo.shade400,
       child: SafeArea(
         child: Column(
           children: [

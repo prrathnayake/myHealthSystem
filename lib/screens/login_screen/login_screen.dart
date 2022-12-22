@@ -32,6 +32,12 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void signIn() async {
+    FocusScopeNode currentFocus = FocusScope.of(context);
+
+    if (!currentFocus.hasPrimaryFocus) {
+      currentFocus.unfocus();
+    }
+
     setState(() {
       _isLoading = true;
     });

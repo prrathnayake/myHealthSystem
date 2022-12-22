@@ -43,6 +43,11 @@ class _SignupScreenState extends State<SignupScreen> {
   }
 
   void signUp() async {
+    FocusScopeNode currentFocus = FocusScope.of(context);
+
+    if (!currentFocus.hasPrimaryFocus) {
+      currentFocus.unfocus();
+    }
     setState(() {
       _isLoading = true;
     });

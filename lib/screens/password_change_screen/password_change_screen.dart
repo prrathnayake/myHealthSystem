@@ -18,6 +18,12 @@ class _PasswordChangeScreenState extends State<PasswordChangeScreen> {
       TextEditingController();
 
   changePassword() async {
+    FocusScopeNode currentFocus = FocusScope.of(context);
+
+    if (!currentFocus.hasPrimaryFocus) {
+      currentFocus.unfocus();
+    }
+
     String res = '';
     if (_passwordController.text != _confirmPasswordController.text) {
       res = 'Passwords don\'t match';
