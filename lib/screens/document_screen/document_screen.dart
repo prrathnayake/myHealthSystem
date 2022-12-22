@@ -1,16 +1,14 @@
 import 'dart:convert';
-import 'dart:io';
 
-import 'package:e_health/utils/colors.dart';
+import 'package:e_health/resources/store_methods.dart';
+import 'package:e_health/screens/document_screen/components/pdfViewer.dart';
+import 'package:e_health/utils/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
-
-import '../../utils/styles.dart';
 
 class DocumentScreen extends StatefulWidget {
   const DocumentScreen({super.key});
@@ -22,9 +20,13 @@ class DocumentScreen extends StatefulWidget {
 class _DocumentScreenState extends State<DocumentScreen> {
   PlatformFile? pickerfile;
   UploadTask? uploadTask;
+  List<Map<dynamic, dynamic>>? files;
 
   Future selectFile() async {
-    final result = await FilePicker.platform.pickFiles();
+    final result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['pdf'],
+    );
     if (result == null) return;
 
     setState(() {
@@ -34,38 +36,13 @@ class _DocumentScreenState extends State<DocumentScreen> {
 
   Future uploadFile() async {
     try {
-      if (pickerfile == null) return print('null');
+      if (pickerfile == null) return null;
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String? json = prefs.getString('userCredentials');
       final Map<String, dynamic> userCredentials = jsonDecode(json!);
 
-      final path = 'Documents/${userCredentials['uid']}/${pickerfile!.name}';
-      final file = File(pickerfile!.path!);
-      final ref = FirebaseStorage.instance.ref().child(path);
-      uploadTask = ref.putFile(file);
-
-      final snapshot = await uploadTask!.whenComplete(() {});
-
-      final urlDownload = await snapshot.ref.getDownloadURL();
-
-      var collection = FirebaseFirestore.instance.collection('users');
-
-      collection
-          .doc(userCredentials['uid'])
-          .collection('urls')
-          .doc(pickerfile!.name)
-          .get()
-          .then((sanphot) => collection
-              .doc(userCredentials['uid'])
-              .collection('urls')
-              .doc(pickerfile!.name)
-              .delete());
-
-      collection
-          .doc(userCredentials['uid'])
-          .collection('urls')
-          .doc(pickerfile!.name)
-          .set({'url': urlDownload});
+      StoreMethods()
+          .uploadFile(pickerfile: pickerfile!, uid: userCredentials['uid']);
 
       setState(() {
         pickerfile = null;
@@ -79,34 +56,104 @@ class _DocumentScreenState extends State<DocumentScreen> {
     }
   }
 
+  getFils() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? json = prefs.getString('userCredentials');
+    final Map<String, dynamic> userCredentials = jsonDecode(json!);
+
+    StoreMethods().getFiles(userCredentials['uid']);
+  }
+
+  @override
+  void initState() {
+    getFils();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: SafeArea(
-        child: Column(
+        child: Stack(
           children: [
-            Text(
-              'Documents',
-              style: TextStyles.textHeader1.copyWith(
-                fontSize: 40,
-              ),
-            ),
-            Expanded(
-              child: SizedBox(
-                width: double.infinity,
-                child: Center(
-                  child: Column(
+            Padding(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                children: [
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      pickerfile != null
-                          ? Text(pickerfile!.name)
-                          : const Text("no file seletced"),
+                      Text(
+                        'Documents',
+                        style: TextStyles.textHeader1.copyWith(
+                          fontSize: 40,
+                        ),
+                      ),
                     ],
                   ),
-                ),
+                  Flexible(
+                    child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                      stream: FirebaseFirestore.instance
+                          .collection('users')
+                          .doc('EeRRj99QS0SMLB5NvDuRh7QFwUw2')
+                          .collection('urls')
+                          .snapshots(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          return ListView.builder(
+                            itemCount: snapshot.data!.docs.length,
+                            itemBuilder: (context, index) {
+                              return ListTile(
+                                title: GestureDetector(
+                                  onTap: () {
+                                    Navigator.of(context)
+                                        .push(MaterialPageRoute(
+                                            builder: (context) => PdfViewer(
+                                                  url: snapshot
+                                                      .data!.docs[index]
+                                                      .get('url'),
+                                                  title: snapshot
+                                                      .data!.docs[index].id,
+                                                )));
+                                  },
+                                  child: Text(
+                                    snapshot.data!.docs[index].id,
+                                  ),
+                                ),
+                              );
+                            },
+                          );
+                        }
+                        if (snapshot.hasError) {
+                          return const Text('Error');
+                        } else {
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        }
+                      },
+                    ),
+                  ),
+                ],
               ),
             ),
+            pickerfile != null
+                ? Flexible(
+                    child: Container(
+                      decoration:
+                          BoxDecoration(color: Colors.white.withOpacity(0.5)),
+                      child: Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Text('File Selected'),
+                            Text(pickerfile!.name),
+                          ],
+                        ),
+                      ),
+                    ),
+                  )
+                : const SizedBox()
           ],
         ),
       ),
