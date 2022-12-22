@@ -1,3 +1,4 @@
+import 'package:e_health/screens/schedule_screen/components/schedule_detail_card.dart';
 import 'package:flutter/material.dart';
 
 import '../../utils/styles.dart';
@@ -10,9 +11,26 @@ class ScheduleScreen extends StatelessWidget {
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.all(20),
-        child: Text(
-          'Schedule',
-          style: TextStyles.textHeader1.copyWith(fontSize: 40),
+        child: Column(
+          children: [
+            Text(
+              'Schedule',
+              style: TextStyles.textHeader1.copyWith(fontSize: 40),
+            ),
+            const SizedBox(height: 20),
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: const [
+                    ScheduleDetailCard(),
+                    ScheduleDetailCard(),
+                    ScheduleDetailCard(),
+                    ScheduleDetailCard()
+                  ],
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
