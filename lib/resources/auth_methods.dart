@@ -136,4 +136,14 @@ class AuthMethods {
 
     return res;
   }
+
+  Future<String> changePassword(password) async {
+    try {
+      User currentUser = _auth.currentUser!;
+      await currentUser.updatePassword(password);
+      return "success";
+    } catch (err) {
+      return err.toString();
+    }
+  }
 }
