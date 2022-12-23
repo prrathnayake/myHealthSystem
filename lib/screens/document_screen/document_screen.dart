@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:e_health/resources/store_methods.dart';
+import 'package:e_health/screens/document_screen/components/document_card.dart';
 import 'package:e_health/screens/document_screen/components/pdfViewer.dart';
 import 'package:e_health/utils/styles.dart';
 import 'package:flutter/material.dart';
@@ -82,7 +83,7 @@ class _DocumentScreenState extends State<DocumentScreen> {
         child: Stack(
           children: [
             Padding(
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.only(top: 20),
               child: Column(
                 children: [
                   Row(
@@ -96,68 +97,77 @@ class _DocumentScreenState extends State<DocumentScreen> {
                       ),
                     ],
                   ),
-                  !isLoading
-                      ? Flexible(
-                          child: StreamBuilder<
-                              QuerySnapshot<Map<String, dynamic>>>(
-                            stream: FirebaseFirestore.instance
-                                .collection('users')
-                                .doc('${userCredentials['uid']}')
-                                .collection('urls')
-                                .snapshots(),
-                            builder: (context, snapshot) {
-                              if (snapshot.hasData) {
-                                return ListView.builder(
-                                  itemCount: snapshot.data!.docs.length,
-                                  itemBuilder: (context, index) {
-                                    return ListTile(
-                                      title: GestureDetector(
-                                        onTap: () {
-                                          Navigator.of(context).push(
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      PdfViewer(
-                                                        url: snapshot
-                                                            .data!.docs[index]
-                                                            .get('url'),
-                                                        title: snapshot.data!
-                                                            .docs[index].id,
-                                                      )));
-                                        },
-                                        child: Text(
-                                          snapshot.data!.docs[index].id,
-                                        ),
-                                      ),
-                                    );
+                  const SizedBox(height: 10),
+                  Flexible(
+                    child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                      stream: FirebaseFirestore.instance
+                          .collection('users')
+                          .doc('${userCredentials['uid']}')
+                          .collection('urls')
+                          .snapshots(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          return ListView.builder(
+                            itemCount: snapshot.data!.docs.length,
+                            itemBuilder: (context, index) {
+                              return ListTile(
+                                title: GestureDetector(
+                                  onTap: () {
+                                    Navigator.of(context)
+                                        .push(MaterialPageRoute(
+                                            builder: (context) => PdfViewer(
+                                                  url: snapshot
+                                                      .data!.docs[index]
+                                                      .get('url'),
+                                                  title: snapshot
+                                                      .data!.docs[index].id,
+                                                )));
                                   },
-                                );
-                              }
-                              if (snapshot.hasError) {
-                                return const Text('Error');
-                              } else {
-                                return const Center(
-                                    child: CircularProgressIndicator());
-                              }
+                                  child: DocumentCard(
+                                    name: snapshot.data!.docs[index].id,
+                                  ),
+                                ),
+                              );
                             },
-                          ),
-                        )
-                      : const Flexible(
-                          child: Center(child: CircularProgressIndicator())),
+                          );
+                        }
+                        if (snapshot.hasError) {
+                          return const Text('Error');
+                        } else {
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        }
+                      },
+                    ),
+                  )
                 ],
               ),
             ),
             pickerfile != null
                 ? Flexible(
                     child: Container(
-                      padding: const EdgeInsets.only(bottom: 30),
                       decoration:
-                          BoxDecoration(color: Colors.white.withOpacity(0.5)),
+                          BoxDecoration(color: Colors.white.withOpacity(0.9)),
                       child: Center(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            const Text('File Selected'),
-                            Text(pickerfile!.name),
+                            const Text(
+                              'File Selected',
+                              style: TextStyle(fontSize: 30),
+                            ),
+                            Text(
+                              pickerfile!.name,
+                              style: const TextStyle(fontSize: 20),
+                            ),
+                            const SizedBox(height: 10),
+                            !isLoading
+                                ? const SizedBox()
+                                : const Center(
+                                    child: CircularProgressIndicator(
+                                      color: Colors.blue,
+                                    ),
+                                  ),
                           ],
                         ),
                       ),
