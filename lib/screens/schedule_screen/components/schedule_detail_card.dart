@@ -1,11 +1,17 @@
 import 'package:e_health/utils/styles.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class ScheduleDetailCard extends StatelessWidget {
-  const ScheduleDetailCard({super.key});
+  const ScheduleDetailCard({super.key, required this.schedule});
+  final Map<dynamic, dynamic> schedule;
 
   @override
   Widget build(BuildContext context) {
+    print(schedule);
+    print(schedule['appointmentDate']);
+    print(DateTime.parse(schedule['appointmentDate']));
+
     return Padding(
       padding: const EdgeInsets.only(bottom: 20),
       child: Container(
@@ -27,11 +33,11 @@ class ScheduleDetailCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Dr. Sunil Peris',
+                        'Dr. ${schedule['firstName']} ${schedule['lastName']}',
                         style: TextStyles.textHeader2,
                       ),
                       Text(
-                        'Cardiologist',
+                        '${schedule['area']}',
                         style: TextStyles.regulerText,
                       ),
                     ],
@@ -47,25 +53,40 @@ class ScheduleDetailCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Row(
-                    children: const [
-                      Icon(Icons.event_outlined),
-                      Text('31/12/2022')
+                    children: [
+                      const Icon(Icons.event_outlined),
+                      const SizedBox(width: 5),
+                      Text(DateFormat.yMEd()
+                          .format(DateTime.parse(schedule['appointmentDate'])))
                     ],
                   ),
                   Row(
-                    children: const [
-                      Icon(Icons.schedule_rounded),
-                      Text('10:30AM')
+                    children: [
+                      const Icon(Icons.schedule_rounded),
+                      const SizedBox(width: 5),
+                      Text(DateFormat('hh:mm a').format(
+                          DateTime.parse(schedule['appointmentDate'])
+                              .toLocal()))
                     ],
                   ),
                   Row(
-                    children: const [
-                      Icon(
-                        Icons.circle,
-                        color: Colors.green,
-                        size: 10,
-                      ),
-                      Text('Confirm')
+                    children: [
+                      schedule['status'] == 'Confirm'
+                          ? const Icon(
+                              Icons.circle,
+                              color: Colors.green,
+                              size: 10,
+                            )
+                          : schedule['status'] == 'Pending'
+                              ? const Icon(
+                                  Icons.circle,
+                                  color: Colors.yellow,
+                                  size: 10,
+                                )
+                              : const Icon(Icons.circle,
+                                  color: Colors.red, size: 10),
+                      const SizedBox(width: 5),
+                      Text('${schedule['status']}')
                     ],
                   )
                 ],
