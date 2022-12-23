@@ -1,10 +1,8 @@
 import 'dart:convert';
 
-import 'package:e_health/resources/auth_methods.dart';
 import 'package:e_health/utils/colors.dart';
 import 'package:e_health/utils/styles.dart';
 import 'package:flutter/material.dart';
-import 'package:e_health/models/user.dart' as model;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreen extends StatefulWidget {

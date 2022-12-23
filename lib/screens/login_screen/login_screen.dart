@@ -5,7 +5,6 @@ import 'package:e_health/screens/signup_screen/signup_screen.dart';
 import 'package:e_health/utils/colors.dart';
 import 'package:e_health/utils/styles.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:e_health/models/user.dart' as model;
 

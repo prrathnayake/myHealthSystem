@@ -1,6 +1,5 @@
 import 'package:e_health/resources/auth_methods.dart';
 import 'package:e_health/utils/colors.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../../utils/styles.dart';

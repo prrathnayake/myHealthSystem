@@ -1,9 +1,7 @@
 import 'package:e_health/resources/auth_methods.dart';
 import 'package:e_health/screens/login_screen/login_screen.dart';
-import 'package:e_health/screens/newFeed_screen/components/news_card.dart';
 import 'package:flutter/material.dart';
 
-import '../../utils/colors.dart';
 import '../../utils/styles.dart';
 
 class NewsFeedScreen extends StatefulWidget {
