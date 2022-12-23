@@ -1,10 +1,9 @@
 import 'dart:convert';
 
-import 'package:e_health/models/schedule.dart';
 import 'package:http/http.dart' as http;
 
 class APImethods {
-  static String api = 'https://101a-175-157-47-229.in.ngrok.io';
+  static String api = 'https://2824-175-157-47-229.in.ngrok.io';
 
   Future<List> getSchedules() async {
     List schedules;
