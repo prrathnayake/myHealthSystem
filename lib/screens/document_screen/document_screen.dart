@@ -20,7 +20,8 @@ class DocumentScreen extends StatefulWidget {
 class _DocumentScreenState extends State<DocumentScreen> {
   PlatformFile? pickerfile;
   UploadTask? uploadTask;
-  List<Map<dynamic, dynamic>>? files;
+  Map<String, dynamic> userCredentials = {'': ''};
+  bool isLoading = false;
 
   Future selectFile() async {
     final result = await FilePicker.platform.pickFiles(
@@ -35,13 +36,12 @@ class _DocumentScreenState extends State<DocumentScreen> {
   }
 
   Future uploadFile() async {
+    setState(() {
+      isLoading = true;
+    });
     try {
       if (pickerfile == null) return null;
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      String? json = prefs.getString('userCredentials');
-      final Map<String, dynamic> userCredentials = jsonDecode(json!);
-
-      StoreMethods()
+      await StoreMethods()
           .uploadFile(pickerfile: pickerfile!, uid: userCredentials['uid']);
 
       setState(() {
@@ -54,20 +54,24 @@ class _DocumentScreenState extends State<DocumentScreen> {
         ),
       );
     }
-  }
-
-  getFils() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? json = prefs.getString('userCredentials');
-    final Map<String, dynamic> userCredentials = jsonDecode(json!);
-
-    StoreMethods().getFiles(userCredentials['uid']);
+    setState(() {
+      isLoading = false;
+    });
   }
 
   @override
   void initState() {
-    getFils();
+    getData();
     super.initState();
+  }
+
+  getData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? json = prefs.getString('userCredentials');
+
+    setState(() {
+      userCredentials = jsonDecode(json!);
+    });
   }
 
   @override
@@ -92,54 +96,60 @@ class _DocumentScreenState extends State<DocumentScreen> {
                       ),
                     ],
                   ),
-                  Flexible(
-                    child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-                      stream: FirebaseFirestore.instance
-                          .collection('users')
-                          .doc('EeRRj99QS0SMLB5NvDuRh7QFwUw2')
-                          .collection('urls')
-                          .snapshots(),
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData) {
-                          return ListView.builder(
-                            itemCount: snapshot.data!.docs.length,
-                            itemBuilder: (context, index) {
-                              return ListTile(
-                                title: GestureDetector(
-                                  onTap: () {
-                                    Navigator.of(context)
-                                        .push(MaterialPageRoute(
-                                            builder: (context) => PdfViewer(
-                                                  url: snapshot
-                                                      .data!.docs[index]
-                                                      .get('url'),
-                                                  title: snapshot
-                                                      .data!.docs[index].id,
-                                                )));
+                  !isLoading
+                      ? Flexible(
+                          child: StreamBuilder<
+                              QuerySnapshot<Map<String, dynamic>>>(
+                            stream: FirebaseFirestore.instance
+                                .collection('users')
+                                .doc('${userCredentials['uid']}')
+                                .collection('urls')
+                                .snapshots(),
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData) {
+                                return ListView.builder(
+                                  itemCount: snapshot.data!.docs.length,
+                                  itemBuilder: (context, index) {
+                                    return ListTile(
+                                      title: GestureDetector(
+                                        onTap: () {
+                                          Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      PdfViewer(
+                                                        url: snapshot
+                                                            .data!.docs[index]
+                                                            .get('url'),
+                                                        title: snapshot.data!
+                                                            .docs[index].id,
+                                                      )));
+                                        },
+                                        child: Text(
+                                          snapshot.data!.docs[index].id,
+                                        ),
+                                      ),
+                                    );
                                   },
-                                  child: Text(
-                                    snapshot.data!.docs[index].id,
-                                  ),
-                                ),
-                              );
+                                );
+                              }
+                              if (snapshot.hasError) {
+                                return const Text('Error');
+                              } else {
+                                return const Center(
+                                    child: CircularProgressIndicator());
+                              }
                             },
-                          );
-                        }
-                        if (snapshot.hasError) {
-                          return const Text('Error');
-                        } else {
-                          return const Center(
-                              child: CircularProgressIndicator());
-                        }
-                      },
-                    ),
-                  ),
+                          ),
+                        )
+                      : const Flexible(
+                          child: Center(child: CircularProgressIndicator())),
                 ],
               ),
             ),
             pickerfile != null
                 ? Flexible(
                     child: Container(
+                      padding: const EdgeInsets.only(bottom: 30),
                       decoration:
                           BoxDecoration(color: Colors.white.withOpacity(0.5)),
                       child: Center(
