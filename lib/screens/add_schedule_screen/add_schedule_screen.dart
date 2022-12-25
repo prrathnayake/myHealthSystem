@@ -91,8 +91,8 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
       endTime: endTime,
       description: _discriptionController.text,
     );
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => const ScheduleScreen()));
+    Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => const ScheduleScreen()));
   }
 
   @override
