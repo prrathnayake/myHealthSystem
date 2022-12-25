@@ -61,8 +61,7 @@ class ScheduleDetailCard extends StatelessWidget {
                       const Icon(Icons.schedule_rounded),
                       const SizedBox(width: 5),
                       Text(DateFormat('hh:mm a').format(DateTime.parse(
-                              '${DateFormat('yyyy-MM-dd').format(DateTime.parse(schedule['appointmentDate']))}T${schedule['startTime']}.000Z')
-                          .toLocal()))
+                          '${DateFormat('yyyy-MM-dd').format(DateTime.parse(schedule['appointmentDate']))}T${schedule['startTime']}.000Z')))
                     ],
                   ),
                   Row(

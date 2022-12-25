@@ -5,14 +5,15 @@ import 'package:flutter/material.dart';
 import '../../../utils/colors.dart';
 
 class HospitalDropdown extends StatefulWidget {
-  const HospitalDropdown({super.key});
+  late String hospitalID;
+  final dynamic getFuc;
+  HospitalDropdown({super.key, required this.hospitalID, required this.getFuc});
 
   @override
   State<HospitalDropdown> createState() => _HospitalDropdownState();
 }
 
 class _HospitalDropdownState extends State<HospitalDropdown> {
-  String dropdownvalue = '';
   List? hospitals;
   bool isLoading = false;
 
@@ -48,11 +49,13 @@ class _HospitalDropdownState extends State<HospitalDropdown> {
                 ? Expanded(
                     child: DropdownButton(
                       isExpanded: true,
-                      value: dropdownvalue.isNotEmpty ? dropdownvalue : null,
+                      value: widget.hospitalID.isNotEmpty
+                          ? widget.hospitalID
+                          : null,
                       icon: const Icon(Icons.keyboard_arrow_down),
                       items: hospitals?.map((hospital) {
                         return DropdownMenuItem(
-                          value: hospital['hospitalId'].toString(),
+                          value: hospital['hospitalID'].toString(),
                           child: Text(
                             hospital['name'].toString(),
                             style: TextStyles.textHeader2,
@@ -62,8 +65,9 @@ class _HospitalDropdownState extends State<HospitalDropdown> {
                       }).toList(),
                       onChanged: (value) {
                         setState(() {
-                          dropdownvalue = value!;
+                          widget.hospitalID = value!;
                         });
+                        widget.getFuc(value!);
                       },
                     ),
                   )

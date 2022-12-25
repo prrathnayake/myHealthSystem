@@ -5,58 +5,52 @@ import 'package:intl/intl.dart';
 import '../../../utils/styles.dart';
 
 class TimeField extends StatefulWidget {
-  const TimeField({super.key});
+  late TimeOfDay selectedTime;
+  final dynamic getFuc;
+  TimeField({super.key, required this.selectedTime, required this.getFuc});
 
   @override
   State<TimeField> createState() => _TimeFieldState();
 }
 
 class _TimeFieldState extends State<TimeField> {
-  TimeOfDay selectedTime = const TimeOfDay(hour: 8, minute: 00);
-
   Future<void> _selectTime(BuildContext context) async {
     final TimeOfDay? picked = await showTimePicker(
       context: context,
       initialTime: const TimeOfDay(hour: 8, minute: 00),
     );
-    if (picked != null && picked != selectedTime) {
+    if (picked != null && picked != widget.selectedTime) {
       setState(() {
-        selectedTime = picked;
+        widget.selectedTime = picked;
       });
+      widget.getFuc(picked);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Row(
-          children: [
-            Text(
-              'Start Time :',
+    return Expanded(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            DateFormat('hh:mm a').format(DateTime(
+                DateTime.now().year,
+                DateTime.now().month,
+                DateTime.now().day,
+                widget.selectedTime.hour,
+                widget.selectedTime.minute)),
+            style: TextStyles.textHeader2,
+          ),
+          TextButton(
+            onPressed: () => _selectTime(context),
+            child: Text(
+              'Change time',
               style: TextStyles.textHeader2.copyWith(color: CustomColors.black),
             ),
-            const SizedBox(width: 20),
-            Text(
-              DateFormat('hh:mm a').format(DateTime(
-                  DateTime.now().year,
-                  DateTime.now().month,
-                  DateTime.now().day,
-                  selectedTime.hour,
-                  selectedTime.minute)),
-              style: TextStyles.textHeader2,
-            ),
-          ],
-        ),
-        TextButton(
-          onPressed: () => _selectTime(context),
-          child: Text(
-            'Change time',
-            style: TextStyles.textHeader2.copyWith(color: CustomColors.black),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

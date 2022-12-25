@@ -5,26 +5,27 @@ import 'package:intl/intl.dart';
 import '../../../utils/styles.dart';
 
 class DateField extends StatefulWidget {
-  const DateField({super.key});
+  late DateTime selectedDate;
+  final dynamic getFuc;
+  DateField({super.key, required this.selectedDate, required this.getFuc});
 
   @override
   State<DateField> createState() => _DateFieldState();
 }
 
 class _DateFieldState extends State<DateField> {
-  DateTime selectedDate = DateTime.now().add(const Duration(days: 1));
-
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
         keyboardType: TextInputType.datetime,
         context: context,
-        initialDate: selectedDate,
+        initialDate: widget.selectedDate,
         firstDate: DateTime.now().add(const Duration(days: 1)),
         lastDate: DateTime.now().add(const Duration(days: 30)));
-    if (picked != null && picked != selectedDate) {
+    if (picked != null && picked != widget.selectedDate) {
       setState(() {
-        selectedDate = picked;
+        widget.selectedDate = picked;
       });
+      widget.getFuc(picked);
     }
   }
 
@@ -41,7 +42,7 @@ class _DateFieldState extends State<DateField> {
             ),
             const SizedBox(width: 20),
             Text(
-              DateFormat.yMEd().format(selectedDate).toString(),
+              DateFormat.yMEd().format(widget.selectedDate).toString(),
               style: TextStyles.textHeader2,
             ),
           ],

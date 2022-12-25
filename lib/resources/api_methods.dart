@@ -1,6 +1,8 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 
 class APImethods {
   static String api = 'https://6b69-175-157-47-229.in.ngrok.io';
@@ -72,5 +74,48 @@ class APImethods {
 
     hospitals = jsonDecode(response.body);
     return hospitals;
+  }
+
+  Future<void> createAppointment(
+      {required String hospitalID,
+      required String doctorID,
+      required String uid,
+      required DateTime date,
+      required TimeOfDay startTime,
+      required TimeOfDay endTime,
+      required String description}) async {
+    // print('doctorID : $doctorID');
+    // print('hospitalID : $hospitalID');
+    // print('SelectedDate : $date');
+    // print(
+    //     'StartTime : ${DateFormat('hh:mm a').format(DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, startTime.hour, startTime.minute))}');
+    // print(
+    //     'EndTime : ${DateFormat('hh:mm a').format(DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, endTime.hour, endTime.minute))}');
+    // print('Discription : $discription');
+
+    await http.post(Uri.parse('$api/schedules/add'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{
+          'doctorID': doctorID,
+          'patientUid': uid,
+          'hospitalID': hospitalID,
+          'dateNow': DateFormat('yyyy-MM-dd HH:mm:ss')
+              .format(DateTime.now())
+              .toString(),
+          'date': DateFormat('yyyy-MM-dd HH:mm:ss').format(date).toString(),
+          'startTime': DateFormat('HH:mm:ss').format(DateTime(
+              DateTime.now().year,
+              DateTime.now().month,
+              DateTime.now().day,
+              endTime.hour,
+              endTime.minute)),
+          'endTime': DateFormat('HH:mm:ss')
+              .format(DateTime(DateTime.now().year, DateTime.now().month,
+                  DateTime.now().day, endTime.hour, endTime.minute))
+              .toString(),
+          'description': description,
+        }));
   }
 }

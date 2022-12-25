@@ -4,14 +4,15 @@ import 'package:e_health/utils/styles.dart';
 import 'package:flutter/material.dart';
 
 class DoctorDropdown extends StatefulWidget {
-  const DoctorDropdown({super.key});
+  late String doctorID;
+  final dynamic getFuc;
+  DoctorDropdown({super.key, required this.doctorID, required this.getFuc});
 
   @override
   State<DoctorDropdown> createState() => _DoctorDropdownState();
 }
 
 class _DoctorDropdownState extends State<DoctorDropdown> {
-  String dropdownvalue = '';
   List? doctors;
   bool isLoading = false;
 
@@ -45,7 +46,7 @@ class _DoctorDropdownState extends State<DoctorDropdown> {
         !isLoading
             ? doctors != null
                 ? DropdownButton(
-                    value: dropdownvalue.isNotEmpty ? dropdownvalue : null,
+                    value: widget.doctorID.isNotEmpty ? widget.doctorID : null,
                     icon: const Icon(Icons.keyboard_arrow_down),
                     items: doctors?.map((doctor) {
                       return DropdownMenuItem(
@@ -59,8 +60,9 @@ class _DoctorDropdownState extends State<DoctorDropdown> {
                     }).toList(),
                     onChanged: (value) {
                       setState(() {
-                        dropdownvalue = value!;
+                        widget.doctorID = value!;
                       });
+                      widget.getFuc(value!);
                     },
                   )
                 : const SizedBox()
