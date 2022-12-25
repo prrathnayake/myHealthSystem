@@ -45,15 +45,15 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
     });
   }
 
-  void refreshStartTime(TimeOfDay getStartDate) {
+  void refreshStartTime(TimeOfDay getStartTime) {
     setState(() {
-      startTime = getStartDate;
+      startTime = getStartTime;
     });
   }
 
-  void refreshEndTime(TimeOfDay getEndDate) {
+  void refreshEndTime(TimeOfDay getEndTime) {
     setState(() {
-      endTime = getEndDate;
+      endTime = getEndTime;
     });
   }
 
@@ -91,8 +91,7 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
       endTime: endTime,
       description: _discriptionController.text,
     );
-    Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => const ScheduleScreen()));
+    Navigator.of(context).pop();
   }
 
   @override
@@ -147,7 +146,7 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
                   Row(
                     children: [
                       Text(
-                        'Start Time :',
+                        'End Time :',
                         style: TextStyles.textHeader2
                             .copyWith(color: CustomColors.black),
                       ),

@@ -1,4 +1,5 @@
 import 'package:e_health/resources/api_methods.dart';
+import 'package:e_health/screens/reschedule_screen.dart/reschedule_screen.dart';
 import 'package:e_health/screens/schedule_screen/schedule_screen.dart';
 import 'package:e_health/utils/styles.dart';
 import 'package:flutter/material.dart';
@@ -67,7 +68,8 @@ class _ScheduleDetailCardState extends State<ScheduleDetailCard> {
                       const Icon(Icons.event_outlined),
                       const SizedBox(width: 5),
                       Text(DateFormat.yMEd().format(
-                          DateTime.parse(widget.schedule['appointmentDate'])))
+                          DateTime.parse(widget.schedule['appointmentDate'])
+                              .toLocal()))
                     ],
                   ),
                   Row(
@@ -133,7 +135,12 @@ class _ScheduleDetailCardState extends State<ScheduleDetailCard> {
                   ),
                   const SizedBox(width: 20),
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => RescheduleScreen(
+                                scheduleID: widget.schedule['scheduleID'],
+                              )));
+                    },
                     child: Container(
                       width: 140,
                       height: 50,

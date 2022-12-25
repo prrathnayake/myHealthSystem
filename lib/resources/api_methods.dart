@@ -20,7 +20,7 @@ class APImethods {
     return schedules;
   }
 
-  Future<List> getSchedulesByID({required int id}) async {
+  Future<List> getScheduleByID({required int id}) async {
     List schedules;
     http.Response response = await http.get(
       Uri.parse('$api/schedules/id?id=$id'),
@@ -100,8 +100,44 @@ class APImethods {
               DateTime.now().year,
               DateTime.now().month,
               DateTime.now().day,
-              endTime.hour,
-              endTime.minute)),
+              startTime.hour,
+              startTime.minute)),
+          'endTime': DateFormat('HH:mm:ss')
+              .format(DateTime(DateTime.now().year, DateTime.now().month,
+                  DateTime.now().day, endTime.hour, endTime.minute))
+              .toString(),
+          'description': description,
+        }));
+  }
+
+  Future<void> updateAppointment(
+      {required String scheduleID,
+      required String hospitalID,
+      required String doctorID,
+      required String uid,
+      required DateTime date,
+      required TimeOfDay startTime,
+      required TimeOfDay endTime,
+      required String description}) async {
+    await http.post(Uri.parse('$api/schedules/update'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{
+          'scheduleID': scheduleID,
+          'doctorID': doctorID,
+          'patientUid': uid,
+          'hospitalID': hospitalID,
+          'dateNow': DateFormat('yyyy-MM-dd HH:mm:ss')
+              .format(DateTime.now())
+              .toString(),
+          'date': DateFormat('yyyy-MM-dd HH:mm:ss').format(date).toString(),
+          'startTime': DateFormat('HH:mm:ss').format(DateTime(
+              DateTime.now().year,
+              DateTime.now().month,
+              DateTime.now().day,
+              startTime.hour,
+              startTime.minute)),
           'endTime': DateFormat('HH:mm:ss')
               .format(DateTime(DateTime.now().year, DateTime.now().month,
                   DateTime.now().day, endTime.hour, endTime.minute))
