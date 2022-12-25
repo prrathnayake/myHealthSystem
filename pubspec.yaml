@@ -47,6 +47,7 @@ dependencies:
   flutter_speed_dial: ^6.2.0
   intl: ^0.17.0
   syncfusion_flutter_pdfviewer: ^20.4.38
+  bordered_text: ^2.0.0
   
 
 dev_dependencies:

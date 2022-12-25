@@ -1,5 +1,8 @@
 import 'dart:convert';
 
+import 'package:bordered_text/bordered_text.dart';
+import 'package:e_health/screens/home_screen/components/doctor_card.dart';
+import 'package:e_health/screens/home_screen/components/hospital_card.dart';
 import 'package:e_health/utils/colors.dart';
 import 'package:e_health/utils/styles.dart';
 import 'package:flutter/material.dart';
@@ -35,41 +38,154 @@ class _HomeScreenState extends State<HomeScreen> {
     return SafeArea(
       child: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.all(10),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
+              const SizedBox(height: 20),
               Row(
                 children: [
                   Text(
                     'Hi, ${userCredentials['username']} 👋',
-                    style: TextStyles.textHeader1.copyWith(fontSize: 40),
+                    style: TextStyles.textHeader1
+                        .copyWith(fontSize: 40, color: CustomColors.black),
+                  )
+                ],
+              ),
+              const SizedBox(height: 10),
+              Row(
+                children: [
+                  Text(
+                    'How can we help you today?',
+                    style: TextStyles.textHeader2
+                        .copyWith(fontSize: 30, color: CustomColors.black),
                   )
                 ],
               ),
               const SizedBox(height: 20),
-              Container(
-                width: double.infinity,
-                height: 200,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(30),
-                  image: DecorationImage(
-                    image: const AssetImage('assets/images/appointment_bg.png'),
-                    fit: BoxFit.cover,
-                    colorFilter: ColorFilter.mode(
-                        CustomColors.lightBlue.withOpacity(0.5),
-                        BlendMode.dstATop),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    width: 180,
+                    height: 160,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      image: DecorationImage(
+                        image: const AssetImage(
+                            'assets/images/appointment_bg.png'),
+                        fit: BoxFit.cover,
+                        colorFilter: ColorFilter.mode(
+                            CustomColors.lightBlue.withOpacity(1),
+                            BlendMode.dstATop),
+                      ),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: Stack(
+                        children: [
+                          BorderedText(
+                            strokeColor: CustomColors.black,
+                            strokeWidth: 2,
+                            child: Text(
+                              "Appointments",
+                              style: TextStyles.textHeader2.copyWith(
+                                  fontSize: 25, color: CustomColors.white),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(15),
-                  child: Text(
-                    "Manage your appointment",
-                    style: TextStyles.textHeader2
-                        .copyWith(fontSize: 30, color: CustomColors.white),
+                  Container(
+                    width: 180,
+                    height: 160,
+                    alignment: Alignment.bottomLeft,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      image: DecorationImage(
+                        image: const AssetImage(
+                            'assets/images/e_prescription.png'),
+                        fit: BoxFit.cover,
+                        colorFilter: ColorFilter.mode(
+                            CustomColors.lightBlue.withOpacity(1),
+                            BlendMode.dstATop),
+                      ),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: BorderedText(
+                        strokeColor: CustomColors.black,
+                        strokeWidth: 2,
+                        child: Text(
+                          "E-Prescriptions",
+                          style: TextStyles.textHeader2.copyWith(
+                              fontSize: 25, color: CustomColors.white),
+                        ),
+                      ),
+                    ),
                   ),
+                ],
+              ),
+              const SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    'Popular Doctors',
+                    style: TextStyles.textHeader1
+                        .copyWith(fontSize: 25, color: CustomColors.black),
+                  ),
+                  TextButton(
+                      onPressed: () {},
+                      child: const Text(
+                        'See All',
+                        style: TextStyle(fontSize: 20),
+                      ))
+                ],
+              ),
+              const SizedBox(height: 10),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: const [
+                    DoctorCard(),
+                    DoctorCard(),
+                    DoctorCard(),
+                    DoctorCard()
+                  ],
                 ),
-              )
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    'Popular Hospitals',
+                    style: TextStyles.textHeader1
+                        .copyWith(fontSize: 25, color: CustomColors.black),
+                  ),
+                  TextButton(
+                      onPressed: () {},
+                      child: const Text(
+                        'See All',
+                        style: TextStyle(fontSize: 20),
+                      ))
+                ],
+              ),
+              const SizedBox(height: 10),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: const [
+                    HospitalCard(),
+                    HospitalCard(),
+                    HospitalCard(),
+                    HospitalCard()
+                  ],
+                ),
+              ),
             ],
           ),
         ),
