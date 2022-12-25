@@ -5,6 +5,7 @@ import 'package:e_health/screens/add_schedule_screen/components/date_field.dart'
 import 'package:e_health/screens/add_schedule_screen/components/doctor_dropdown.dart';
 import 'package:e_health/screens/add_schedule_screen/components/hospital_dropdown.dart';
 import 'package:e_health/screens/add_schedule_screen/components/time_field.dart';
+import 'package:e_health/screens/schedule_screen/schedule_screen.dart';
 import 'package:e_health/utils/colors.dart';
 import 'package:e_health/utils/styles.dart';
 import 'package:flutter/material.dart';
@@ -61,6 +62,26 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
     String? json = prefs.getString('userCredentials');
     Map<String, dynamic> userCredentials = jsonDecode(json!);
 
+    if (doctorID == '') {
+      return ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('Please select a doctor'),
+      ));
+    }
+
+    if (hospitalID == '') {
+      return ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('Please select a hospital'),
+      ));
+    }
+
+    if (startTime.hour > endTime.hour ||
+        (startTime.hour == endTime.hour &&
+            startTime.minute >= endTime.minute)) {
+      return ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('Please start Time cannot be greater than end Time'),
+      ));
+    }
+
     await APImethods().createAppointment(
       doctorID: doctorID,
       uid: userCredentials['uid'],
@@ -70,8 +91,8 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
       endTime: endTime,
       description: _discriptionController.text,
     );
-    Navigator.of(context).push(
-        MaterialPageRoute(builder: (context) => const AddScheduleScreen()));
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => const ScheduleScreen()));
   }
 
   @override
