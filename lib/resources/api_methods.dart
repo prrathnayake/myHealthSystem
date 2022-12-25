@@ -84,15 +84,6 @@ class APImethods {
       required TimeOfDay startTime,
       required TimeOfDay endTime,
       required String description}) async {
-    // print('doctorID : $doctorID');
-    // print('hospitalID : $hospitalID');
-    // print('SelectedDate : $date');
-    // print(
-    //     'StartTime : ${DateFormat('hh:mm a').format(DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, startTime.hour, startTime.minute))}');
-    // print(
-    //     'EndTime : ${DateFormat('hh:mm a').format(DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, endTime.hour, endTime.minute))}');
-    // print('Discription : $discription');
-
     await http.post(Uri.parse('$api/schedules/add'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
@@ -117,5 +108,16 @@ class APImethods {
               .toString(),
           'description': description,
         }));
+  }
+
+  Future<void> cancleAppointment({
+    required String appointmentID,
+  }) async {
+    await http.post(
+      Uri.parse('$api/schedules/cancle?id=$appointmentID'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
   }
 }

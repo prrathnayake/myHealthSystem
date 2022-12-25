@@ -1,10 +1,24 @@
+import 'package:e_health/resources/api_methods.dart';
+import 'package:e_health/screens/schedule_screen/schedule_screen.dart';
 import 'package:e_health/utils/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class ScheduleDetailCard extends StatelessWidget {
+class ScheduleDetailCard extends StatefulWidget {
   const ScheduleDetailCard({super.key, required this.schedule});
   final Map<dynamic, dynamic> schedule;
+
+  @override
+  State<ScheduleDetailCard> createState() => _ScheduleDetailCardState();
+}
+
+class _ScheduleDetailCardState extends State<ScheduleDetailCard> {
+  cancelAppointment() async {
+    await APImethods().cancleAppointment(
+        appointmentID: widget.schedule['scheduleID'].toString());
+    Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => const ScheduleScreen()));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,11 +43,11 @@ class ScheduleDetailCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Dr. ${schedule['firstName']} ${schedule['lastName']}',
+                        'Dr. ${widget.schedule['firstName']} ${widget.schedule['lastName']}',
                         style: TextStyles.textHeader2,
                       ),
                       Text(
-                        '${schedule['area']}',
+                        '${widget.schedule['area']}',
                         style: TextStyles.regulerText,
                       ),
                     ],
@@ -52,8 +66,8 @@ class ScheduleDetailCard extends StatelessWidget {
                     children: [
                       const Icon(Icons.event_outlined),
                       const SizedBox(width: 5),
-                      Text(DateFormat.yMEd()
-                          .format(DateTime.parse(schedule['appointmentDate'])))
+                      Text(DateFormat.yMEd().format(
+                          DateTime.parse(widget.schedule['appointmentDate'])))
                     ],
                   ),
                   Row(
@@ -61,18 +75,18 @@ class ScheduleDetailCard extends StatelessWidget {
                       const Icon(Icons.schedule_rounded),
                       const SizedBox(width: 5),
                       Text(DateFormat('hh:mm a').format(DateTime.parse(
-                          '${DateFormat('yyyy-MM-dd').format(DateTime.parse(schedule['appointmentDate']))}T${schedule['startTime']}.000Z')))
+                          '${DateFormat('yyyy-MM-dd').format(DateTime.parse(widget.schedule['appointmentDate']))}T${widget.schedule['startTime']}.000Z')))
                     ],
                   ),
                   Row(
                     children: [
-                      schedule['status'] == 'Confirm'
+                      widget.schedule['status'] == 'Confirm'
                           ? const Icon(
                               Icons.circle,
                               color: Colors.green,
                               size: 10,
                             )
-                          : schedule['status'] == 'Pending'
+                          : widget.schedule['status'] == 'Pending'
                               ? const Icon(
                                   Icons.circle,
                                   color: Colors.yellow,
@@ -81,7 +95,7 @@ class ScheduleDetailCard extends StatelessWidget {
                               : const Icon(Icons.circle,
                                   color: Colors.red, size: 10),
                       const SizedBox(width: 5),
-                      Text('${schedule['status']}')
+                      Text('${widget.schedule['status']}')
                     ],
                   )
                 ],
@@ -91,7 +105,22 @@ class ScheduleDetailCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () => showDialog<String>(
+                      context: context,
+                      builder: (BuildContext context) => AlertDialog(
+                        content: const Text(
+                            'Are you sure, Do you want to cansle this appointment?'),
+                        actions: <Widget>[
+                          TextButton(
+                            onPressed: () => Navigator.pop(context, 'Cancel'),
+                            child: const Text('Cancel'),
+                          ),
+                          TextButton(
+                              onPressed: cancelAppointment,
+                              child: const Text('Sure')),
+                        ],
+                      ),
+                    ),
                     child: Container(
                       width: 140,
                       height: 50,
