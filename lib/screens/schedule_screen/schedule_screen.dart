@@ -1,7 +1,9 @@
+import 'dart:convert';
+
 import 'package:e_health/screens/add_schedule_screen/add_schedule_screen.dart';
 import 'package:e_health/screens/schedule_screen/components/schedule_detail_card.dart';
 import 'package:flutter/material.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../resources/api_methods.dart';
 import '../../utils/styles.dart';
 
@@ -20,7 +22,11 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
     setState(() {
       isLoading = true;
     });
-    List data = await APImethods().getSchedules();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? json = prefs.getString('userCredentials');
+    Map<String, dynamic> userCredentials = jsonDecode(json!);
+    List data = await APImethods()
+        .getSchedulesByUserID(uid: userCredentials['uid'].toString());
 
     setState(() {
       schedules = data;
@@ -51,15 +57,18 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
               Expanded(
                 child: schedules == null
                     ? const Center(child: CircularProgressIndicator())
-                    : ListView.builder(
-                        itemCount: schedules!.length,
-                        itemBuilder: (context, index) {
-                          Map<dynamic, dynamic> schedule = schedules![index];
-                          return ScheduleDetailCard(
-                            schedule: schedule,
-                          );
-                        },
-                      ),
+                    : schedules!.isNotEmpty
+                        ? ListView.builder(
+                            itemCount: schedules!.length,
+                            itemBuilder: (context, index) {
+                              Map<dynamic, dynamic> schedule =
+                                  schedules![index];
+                              return ScheduleDetailCard(
+                                schedule: schedule,
+                              );
+                            },
+                          )
+                        : const Center(child: Text('No Schedules')),
               ),
             ],
           ),
