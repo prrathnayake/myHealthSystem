@@ -2,7 +2,8 @@ import 'package:e_health/utils/styles.dart';
 import 'package:flutter/material.dart';
 
 class HospitalCard extends StatelessWidget {
-  const HospitalCard({super.key});
+  const HospitalCard({super.key, required this.hospital});
+  final Map<dynamic, dynamic> hospital;
 
   @override
   Widget build(BuildContext context) {
@@ -22,13 +23,14 @@ class HospitalCard extends StatelessWidget {
               Image.asset('assets/images/hospital.jpg'),
               const SizedBox(height: 10),
               Text(
-                'Sri. Jayawaradhanapura Hospital',
+                ' ${hospital['name']}',
                 style: TextStyles.regulerText,
                 overflow: TextOverflow.ellipsis,
               ),
               Text(
-                'Neurologists',
+                ' ${hospital['address']}',
                 style: TextStyle(color: Colors.grey.shade600),
+                overflow: TextOverflow.ellipsis,
               ),
               const SizedBox(height: 10),
               Row(

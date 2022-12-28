@@ -2,7 +2,8 @@ import 'package:e_health/utils/styles.dart';
 import 'package:flutter/material.dart';
 
 class DoctorCard extends StatelessWidget {
-  const DoctorCard({super.key});
+  const DoctorCard({super.key, required this.doctor});
+  final Map<dynamic, dynamic> doctor;
 
   @override
   Widget build(BuildContext context) {
@@ -25,12 +26,12 @@ class DoctorCard extends StatelessWidget {
               ),
               const SizedBox(height: 10),
               Text(
-                'Dr. Sunil Kumarage',
+                'Dr. ${doctor['firstName']}  ${doctor['lastName']}',
                 style: TextStyles.regulerText,
                 overflow: TextOverflow.ellipsis,
               ),
               Text(
-                'Neurologists',
+                ' ${doctor['area']}',
                 style: TextStyle(color: Colors.grey.shade600),
               ),
               const SizedBox(height: 10),

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:bordered_text/bordered_text.dart';
+import 'package:e_health/resources/api_methods.dart';
 import 'package:e_health/screens/home_screen/components/doctor_card.dart';
 import 'package:e_health/screens/home_screen/components/hospital_card.dart';
 import 'package:e_health/utils/colors.dart';
@@ -17,10 +18,15 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   late Map<String, dynamic> userCredentials = {'username': ' '};
+  List? doctors;
+  List? hospitals;
+  bool isLoading = false;
 
   @override
   void initState() {
     getData();
+    getDoctors();
+    getHospitals();
     super.initState();
   }
 
@@ -33,6 +39,30 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  getDoctors() async {
+    setState(() {
+      isLoading = true;
+    });
+    List data = await APImethods().getDoctors();
+
+    setState(() {
+      doctors = data;
+      isLoading = false;
+    });
+  }
+
+  getHospitals() async {
+    setState(() {
+      isLoading = true;
+    });
+    List data = await APImethods().getHospitals();
+
+    setState(() {
+      hospitals = data;
+      isLoading = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -41,6 +71,7 @@ class _HomeScreenState extends State<HomeScreen> {
           padding: const EdgeInsets.all(10),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 20),
               Row(
@@ -148,14 +179,14 @@ class _HomeScreenState extends State<HomeScreen> {
               const SizedBox(height: 10),
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: const [
-                    DoctorCard(),
-                    DoctorCard(),
-                    DoctorCard(),
-                    DoctorCard()
-                  ],
-                ),
+                child: doctors == null
+                    ? const Center(child: CircularProgressIndicator())
+                    : Row(
+                        children: doctors!
+                            .map((singleDoctor) =>
+                                DoctorCard(doctor: singleDoctor))
+                            .toList(),
+                      ),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -177,14 +208,14 @@ class _HomeScreenState extends State<HomeScreen> {
               const SizedBox(height: 10),
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: const [
-                    HospitalCard(),
-                    HospitalCard(),
-                    HospitalCard(),
-                    HospitalCard()
-                  ],
-                ),
+                child: hospitals == null
+                    ? const Center(child: CircularProgressIndicator())
+                    : Row(
+                        children: hospitals!
+                            .map((singleHospital) =>
+                                HospitalCard(hospital: singleHospital))
+                            .toList(),
+                      ),
               ),
             ],
           ),

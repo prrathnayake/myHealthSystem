@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
 class APImethods {
-  static String api = 'https://6b69-175-157-47-229.in.ngrok.io';
+  static String api = 'https://f6f5-175-157-47-229.ap.ngrok.io';
 
   Future<List> getSchedules() async {
     List schedules;
@@ -155,5 +155,52 @@ class APImethods {
         'Content-Type': 'application/json; charset=UTF-8',
       },
     );
+  }
+
+  Future<void> predicDisease({
+    required List symptoms,
+  }) async {
+    await http.get(
+      Uri.parse('$api/?symptoms=$symptoms'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+  }
+
+  Future<List> getDoctors() async {
+    List doctors;
+    http.Response response = await http.get(
+      Uri.parse('$api/doctors'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+    doctors = jsonDecode(response.body);
+    return doctors;
+  }
+
+  Future<List> getDoctorsByID({required int id}) async {
+    List doctors;
+    http.Response response = await http.get(
+      Uri.parse('$api/doctors/id?id=$id'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+    doctors = jsonDecode(response.body);
+    return doctors;
+  }
+
+  Future<List> getHospitals() async {
+    List hospitals;
+    http.Response response = await http.get(
+      Uri.parse('$api/hospitals/'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+    hospitals = jsonDecode(response.body);
+    return hospitals;
   }
 }
