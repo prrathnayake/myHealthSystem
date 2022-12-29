@@ -1,5 +1,5 @@
+import 'package:e_health/screens/disease_predic_screen/disease_predic_screen.dart';
 import 'package:e_health/screens/home_screen/home_screen.dart';
-import 'package:e_health/screens/newFeed_screen/news_feed_screen.dart';
 import 'package:e_health/screens/profile_screen/profile_screen.dart';
 import 'package:e_health/screens/schedule_screen/schedule_screen.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +15,7 @@ class _BottomBarState extends State<BottomBar> {
   int _selectedIndex = 0;
   static final List<Widget> _widgetOptions = <Widget>[
     const HomeScreen(),
-    const NewsFeedScreen(),
+    const DiseasePredicScreen(),
     const ScheduleScreen(),
     const ProfileScreen(),
   ];

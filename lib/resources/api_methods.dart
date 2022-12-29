@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
 class APImethods {
-  static String api = 'https://f6f5-175-157-47-229.ap.ngrok.io';
+  static String api = 'https://a637-175-157-47-229.in.ngrok.io';
 
   Future<List> getSchedules() async {
     List schedules;
@@ -157,15 +157,18 @@ class APImethods {
     );
   }
 
-  Future<void> predicDisease({
+  Future<String> predicDisease({
     required List symptoms,
   }) async {
-    await http.get(
-      Uri.parse('$api/?symptoms=$symptoms'),
+    String disease;
+    http.Response response = await http.get(
+      Uri.parse('$api/?symptoms=${jsonEncode(symptoms)}'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
     );
+    disease = jsonDecode(response.body)[0];
+    return disease;
   }
 
   Future<List> getDoctors() async {
