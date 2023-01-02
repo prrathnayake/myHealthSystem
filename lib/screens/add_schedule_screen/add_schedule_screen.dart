@@ -1,11 +1,12 @@
 import 'dart:convert';
 
+import 'package:e_health/components/CustomStackBar.dart';
 import 'package:e_health/resources/api_methods.dart';
+import 'package:e_health/screens/add_schedule_screen/components/availableTime_card.dart';
 import 'package:e_health/screens/add_schedule_screen/components/date_field.dart';
 import 'package:e_health/screens/add_schedule_screen/components/doctor_dropdown.dart';
 import 'package:e_health/screens/add_schedule_screen/components/hospital_dropdown.dart';
 import 'package:e_health/screens/add_schedule_screen/components/time_field.dart';
-import 'package:e_health/screens/schedule_screen/schedule_screen.dart';
 import 'package:e_health/utils/colors.dart';
 import 'package:e_health/utils/styles.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +21,7 @@ class AddScheduleScreen extends StatefulWidget {
 }
 
 class _AddScheduleScreenState extends State<AddScheduleScreen> {
+  List? availableTime;
   String doctorID = '';
   String hospitalID = '';
   DateTime selectedDate = DateTime.now().add(const Duration(days: 1));
@@ -57,29 +59,70 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
     });
   }
 
+  getAvailableTime() async {
+    List availableTime = await APImethods()
+        .getAvailableTime(doctorID: doctorID, hospitalID: hospitalID);
+
+    return availableTime;
+  }
+
   createAppointment() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? json = prefs.getString('userCredentials');
     Map<String, dynamic> userCredentials = jsonDecode(json!);
 
     if (doctorID == '') {
-      return ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('Please select a doctor'),
-      ));
+      return customStackBar(context: context, text: 'Please select a doctor');
     }
 
     if (hospitalID == '') {
-      return ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('Please select a hospital'),
-      ));
+      return customStackBar(context: context, text: 'Please select a hospital');
+    }
+
+    bool dayMatched = false;
+    for (var day in availableTime!) {
+      if (DateFormat('EEEE').format(selectedDate) == day['dayOfWeek']) {
+        dayMatched = true;
+        TimeOfDay st = startTime;
+        TimeOfDay et = endTime;
+        final now = DateTime.now();
+
+        DateTime startDateTime =
+            DateTime(now.year, now.month, now.day, st.hour, st.minute);
+        DateTime endDateTime =
+            DateTime(now.year, now.month, now.day, et.hour, et.minute);
+        DateTime availableStartDateTime = DateTime.parse(
+            '${now.year}-${now.month < 10 ? ('0${now.month}') : now.month}-${now.day < 10 ? ('0${now.day}') : now.day} ${day['startTime']}');
+        DateTime availableEndDateTime = DateTime.parse(
+            '${now.year}-${now.month < 10 ? ('0${now.month}') : now.month}-${now.day < 10 ? ('0${now.day}') : now.day} ${day['endTime']}');
+
+        if (startDateTime.hour < availableStartDateTime.hour ||
+            endDateTime.hour > availableEndDateTime.hour ||
+            (startDateTime.hour == availableStartDateTime.hour &&
+                startDateTime.minute < availableStartDateTime.minute) ||
+            (endDateTime.hour == availableEndDateTime.hour &&
+                endDateTime.minute > availableEndDateTime.minute)) {
+          return customStackBar(
+              context: context,
+              text:
+                  'Doctor only available at ${DateFormat('hh:mm a').format(availableStartDateTime)} to ${DateFormat('hh:mm a').format(availableEndDateTime)}');
+        }
+      }
+    }
+
+    if (!dayMatched) {
+      return customStackBar(
+          context: context,
+          text:
+              'Doctor doesn\'t available in ${DateFormat('EEEE').format(selectedDate)}');
     }
 
     if (startTime.hour > endTime.hour ||
         (startTime.hour == endTime.hour &&
             startTime.minute >= endTime.minute)) {
-      return ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('Please start Time cannot be greater than end Time'),
-      ));
+      return customStackBar(
+          context: context,
+          text: 'Please start Time cannot be greater than end Time');
     }
 
     await APImethods().createAppointment(
@@ -96,6 +139,18 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
 
   @override
   Widget build(BuildContext context) {
+    if (doctorID != '' && hospitalID != '') {
+      getAvailableTime() async {
+        List time = await APImethods()
+            .getAvailableTime(doctorID: doctorID, hospitalID: hospitalID);
+
+        setState(() {
+          availableTime = time;
+        });
+      }
+
+      getAvailableTime();
+    }
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: SafeArea(
@@ -124,6 +179,38 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
                   HospitalDropdown(
                     hospitalID: hospitalID,
                     getFuc: refreshHospitalID,
+                  ),
+                  Container(
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: CustomColors.black, // red as border color
+                      ),
+                    ),
+                    child: Column(
+                      children: [
+                        Text(
+                          'Doctor Availablity',
+                          style: TextStyles.textHeader1.copyWith(fontSize: 20),
+                        ),
+                        availableTime != null
+                            ? Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: availableTime!
+                                    .map((i) => Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              AvailableTimeCard(
+                                                  availableTime: i)
+                                            ]))
+                                    .toList())
+                            : const SizedBox(
+                                child: Text('Please select'),
+                              ),
+                      ],
+                    ),
                   ),
                   DateField(
                     selectedDate: selectedDate,
