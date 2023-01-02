@@ -1,3 +1,4 @@
+import 'package:e_health/components/bottombar.dart';
 import 'package:e_health/resources/api_methods.dart';
 import 'package:e_health/screens/reschedule_screen.dart/reschedule_screen.dart';
 import 'package:e_health/screens/schedule_screen/schedule_screen.dart';
@@ -17,8 +18,10 @@ class _ScheduleDetailCardState extends State<ScheduleDetailCard> {
   cancelAppointment() async {
     await APImethods().cancleAppointment(
         appointmentID: widget.schedule['scheduleID'].toString());
-    Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => const ScheduleScreen()));
+    Navigator.of(context).pushReplacement(MaterialPageRoute(
+        builder: (context) => const BottomBar(
+              passIndex: 2,
+            )));
   }
 
   @override

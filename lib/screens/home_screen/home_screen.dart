@@ -1,7 +1,9 @@
 import 'dart:convert';
 
 import 'package:bordered_text/bordered_text.dart';
+import 'package:e_health/components/bottombar.dart';
 import 'package:e_health/resources/api_methods.dart';
+import 'package:e_health/screens/e_prescription_screen/e_prescription_screen.dart';
 import 'package:e_health/screens/home_screen/components/doctor_card.dart';
 import 'package:e_health/screens/home_screen/components/hospital_card.dart';
 import 'package:e_health/utils/colors.dart';
@@ -97,61 +99,75 @@ class _HomeScreenState extends State<HomeScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Container(
-                    width: 180,
-                    height: 160,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      image: DecorationImage(
-                        image: const AssetImage(
-                            'assets/images/appointment_bg.png'),
-                        fit: BoxFit.cover,
-                        colorFilter: ColorFilter.mode(
-                            CustomColors.lightBlue.withOpacity(1),
-                            BlendMode.dstATop),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(
+                          builder: (context) => const BottomBar(
+                                passIndex: 2,
+                              )));
+                    },
+                    child: Container(
+                      width: 180,
+                      height: 160,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        image: DecorationImage(
+                          image: const AssetImage(
+                              'assets/images/appointment_bg.png'),
+                          fit: BoxFit.cover,
+                          colorFilter: ColorFilter.mode(
+                              CustomColors.lightBlue.withOpacity(1),
+                              BlendMode.dstATop),
+                        ),
                       ),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: Stack(
-                        children: [
-                          BorderedText(
-                            strokeColor: CustomColors.black,
-                            strokeWidth: 2,
-                            child: Text(
-                              "Appointments",
-                              style: TextStyles.textHeader2.copyWith(
-                                  fontSize: 25, color: CustomColors.white),
+                      child: Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: Stack(
+                          children: [
+                            BorderedText(
+                              strokeColor: CustomColors.black,
+                              strokeWidth: 2,
+                              child: Text(
+                                "Appointments",
+                                style: TextStyles.textHeader2.copyWith(
+                                    fontSize: 25, color: CustomColors.white),
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                  Container(
-                    width: 180,
-                    height: 160,
-                    alignment: Alignment.bottomLeft,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      image: DecorationImage(
-                        image: const AssetImage(
-                            'assets/images/e_prescription.png'),
-                        fit: BoxFit.cover,
-                        colorFilter: ColorFilter.mode(
-                            CustomColors.lightBlue.withOpacity(1),
-                            BlendMode.dstATop),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => const EPrescriptionScreen()));
+                    },
+                    child: Container(
+                      width: 180,
+                      height: 160,
+                      alignment: Alignment.bottomLeft,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        image: DecorationImage(
+                          image: const AssetImage(
+                              'assets/images/e_prescription.png'),
+                          fit: BoxFit.cover,
+                          colorFilter: ColorFilter.mode(
+                              CustomColors.lightBlue.withOpacity(1),
+                              BlendMode.dstATop),
+                        ),
                       ),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: BorderedText(
-                        strokeColor: CustomColors.black,
-                        strokeWidth: 2,
-                        child: Text(
-                          "E-Prescriptions",
-                          style: TextStyles.textHeader2.copyWith(
-                              fontSize: 25, color: CustomColors.white),
+                      child: Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: BorderedText(
+                          strokeColor: CustomColors.black,
+                          strokeWidth: 2,
+                          child: Text(
+                            "E-Prescriptions",
+                            style: TextStyles.textHeader2.copyWith(
+                                fontSize: 25, color: CustomColors.white),
+                          ),
                         ),
                       ),
                     ),

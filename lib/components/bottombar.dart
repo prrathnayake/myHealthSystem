@@ -5,8 +5,8 @@ import 'package:e_health/screens/schedule_screen/schedule_screen.dart';
 import 'package:flutter/material.dart';
 
 class BottomBar extends StatefulWidget {
-  const BottomBar({super.key});
-
+  const BottomBar({super.key, this.passIndex});
+  final int? passIndex;
   @override
   State<BottomBar> createState() => _BottomBarState();
 }
@@ -24,6 +24,12 @@ class _BottomBarState extends State<BottomBar> {
     setState(() {
       _selectedIndex = index;
     });
+  }
+
+  @override
+  void initState() {
+    _selectedIndex = widget.passIndex ?? 0;
+    super.initState();
   }
 
   @override

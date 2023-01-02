@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:e_health/components/CustomStackBar.dart';
+import 'package:e_health/components/bottombar.dart';
 import 'package:e_health/resources/api_methods.dart';
 import 'package:e_health/screens/add_schedule_screen/components/availableTime_card.dart';
 import 'package:e_health/screens/add_schedule_screen/components/date_field.dart';
@@ -28,6 +29,13 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
   TimeOfDay startTime = const TimeOfDay(hour: 8, minute: 00);
   TimeOfDay endTime = const TimeOfDay(hour: 8, minute: 00);
   final TextEditingController _discriptionController = TextEditingController();
+  bool isLoading = false;
+
+  @override
+  void dispose() {
+    super.dispose();
+    _discriptionController.dispose();
+  }
 
   void refreshDoctorID(String getDoctorID) {
     setState(() {
@@ -67,15 +75,24 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
   }
 
   createAppointment() async {
+    setState(() {
+      isLoading = true;
+    });
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? json = prefs.getString('userCredentials');
     Map<String, dynamic> userCredentials = jsonDecode(json!);
 
     if (doctorID == '') {
+      setState(() {
+        isLoading = false;
+      });
       return customStackBar(context: context, text: 'Please select a doctor');
     }
 
     if (hospitalID == '') {
+      setState(() {
+        isLoading = false;
+      });
       return customStackBar(context: context, text: 'Please select a hospital');
     }
 
@@ -102,6 +119,9 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
                 startDateTime.minute < availableStartDateTime.minute) ||
             (endDateTime.hour == availableEndDateTime.hour &&
                 endDateTime.minute > availableEndDateTime.minute)) {
+          setState(() {
+            isLoading = false;
+          });
           return customStackBar(
               context: context,
               text:
@@ -111,6 +131,9 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
     }
 
     if (!dayMatched) {
+      setState(() {
+        isLoading = false;
+      });
       return customStackBar(
           context: context,
           text:
@@ -120,6 +143,9 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
     if (startTime.hour > endTime.hour ||
         (startTime.hour == endTime.hour &&
             startTime.minute >= endTime.minute)) {
+      setState(() {
+        isLoading = false;
+      });
       return customStackBar(
           context: context,
           text: 'Please start Time cannot be greater than end Time');
@@ -134,7 +160,13 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
       endTime: endTime,
       description: _discriptionController.text,
     );
-    Navigator.of(context).pop();
+    setState(() {
+      isLoading = false;
+    });
+    Navigator.of(context).pushReplacement(MaterialPageRoute(
+        builder: (context) => const BottomBar(
+              passIndex: 2,
+            )));
   }
 
   @override
@@ -154,145 +186,158 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: SafeArea(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'Make Appointment',
-                    style: TextStyles.textHeader1.copyWith(fontSize: 40),
-                  ),
-                ],
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Make Appointment',
+                      style: TextStyles.textHeader1.copyWith(fontSize: 40),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Column(
-                children: [
-                  DoctorDropdown(
-                    doctorID: doctorID,
-                    getFuc: refreshDoctorID,
-                  ),
-                  HospitalDropdown(
-                    hospitalID: hospitalID,
-                    getFuc: refreshHospitalID,
-                  ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: CustomColors.black, // red as border color
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Column(
+                  children: [
+                    DoctorDropdown(
+                      doctorID: doctorID,
+                      getFuc: refreshDoctorID,
+                    ),
+                    HospitalDropdown(
+                      hospitalID: hospitalID,
+                      getFuc: refreshHospitalID,
+                    ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: CustomColors.black, // red as border color
+                        ),
+                      ),
+                      child: Column(
+                        children: [
+                          Text(
+                            'Doctor Availablity',
+                            style:
+                                TextStyles.textHeader1.copyWith(fontSize: 20),
+                          ),
+                          availableTime != null
+                              ? availableTime!.isNotEmpty
+                                  ? Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: availableTime!
+                                          .map((i) => Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    AvailableTimeCard(
+                                                        availableTime: i)
+                                                  ]))
+                                          .toList())
+                                  : const SizedBox(
+                                      child: Text('No available time'),
+                                    )
+                              : const SizedBox(
+                                  child: Text(
+                                      'Please select a doctor and a hospital'),
+                                ),
+                        ],
                       ),
                     ),
-                    child: Column(
+                    DateField(
+                      selectedDate: selectedDate,
+                      getFuc: refreshSelectedDate,
+                    ),
+                    Row(
                       children: [
                         Text(
-                          'Doctor Availablity',
-                          style: TextStyles.textHeader1.copyWith(fontSize: 20),
+                          'Start Time :',
+                          style: TextStyles.textHeader2
+                              .copyWith(color: CustomColors.black),
                         ),
-                        availableTime != null
-                            ? Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: availableTime!
-                                    .map((i) => Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              AvailableTimeCard(
-                                                  availableTime: i)
-                                            ]))
-                                    .toList())
-                            : const SizedBox(
-                                child: Text('Please select'),
-                              ),
+                        const SizedBox(width: 20),
+                        TimeField(
+                          selectedTime: startTime,
+                          getFuc: refreshStartTime,
+                        ),
                       ],
                     ),
-                  ),
-                  DateField(
-                    selectedDate: selectedDate,
-                    getFuc: refreshSelectedDate,
-                  ),
-                  Row(
-                    children: [
-                      Text(
-                        'Start Time :',
-                        style: TextStyles.textHeader2
-                            .copyWith(color: CustomColors.black),
-                      ),
-                      const SizedBox(width: 20),
-                      TimeField(
-                        selectedTime: startTime,
-                        getFuc: refreshStartTime,
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Text(
-                        'End Time :',
-                        style: TextStyles.textHeader2
-                            .copyWith(color: CustomColors.black),
-                      ),
-                      const SizedBox(width: 20),
-                      TimeField(
-                        selectedTime: endTime,
-                        getFuc: refreshEndTime,
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 10),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Description :',
-                        style: TextStyles.textHeader2
-                            .copyWith(color: CustomColors.black),
-                      ),
-                      const SizedBox(width: 20),
-                      SizedBox(
-                        width: 230.0,
-                        child: TextField(
-                          controller: _discriptionController,
-                          maxLines: 5,
-                          textAlign: TextAlign.start,
-                          decoration: InputDecoration(
-                            border: const OutlineInputBorder(),
-                            labelStyle: TextStyles.inputlabel,
-                            hintText: "Enter description",
+                    Row(
+                      children: [
+                        Text(
+                          'End Time :',
+                          style: TextStyles.textHeader2
+                              .copyWith(color: CustomColors.black),
+                        ),
+                        const SizedBox(width: 20),
+                        TimeField(
+                          selectedTime: endTime,
+                          getFuc: refreshEndTime,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Description :',
+                          style: TextStyles.textHeader2
+                              .copyWith(color: CustomColors.black),
+                        ),
+                        const SizedBox(width: 20),
+                        SizedBox(
+                          width: 230.0,
+                          child: TextField(
+                            controller: _discriptionController,
+                            maxLines: 5,
+                            textAlign: TextAlign.start,
+                            decoration: InputDecoration(
+                              border: const OutlineInputBorder(),
+                              labelStyle: TextStyles.inputlabel,
+                              hintText: "Enter description",
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 20),
-                  GestureDetector(
-                    onTap: createAppointment,
-                    child: Container(
-                      width: double.infinity,
-                      height: 50,
-                      decoration: const BoxDecoration(
-                        color: Colors.lightBlue,
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(5),
-                        ),
-                      ),
-                      child: Center(
-                          child: Text(
-                        "Submit",
-                        style: TextStyles.regulerText
-                            .copyWith(color: CustomColors.black),
-                      )),
+                      ],
                     ),
-                  ),
-                ],
+                    const SizedBox(height: 20),
+                    GestureDetector(
+                      onTap: createAppointment,
+                      child: Container(
+                        width: double.infinity,
+                        height: 50,
+                        decoration: const BoxDecoration(
+                          color: Colors.lightBlue,
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(5),
+                          ),
+                        ),
+                        child: Center(
+                            child: isLoading
+                                ? CircularProgressIndicator(
+                                    color: CustomColors.white,
+                                  )
+                                : Text(
+                                    "Submit",
+                                    style: TextStyles.regulerText
+                                        .copyWith(color: CustomColors.black),
+                                  )),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

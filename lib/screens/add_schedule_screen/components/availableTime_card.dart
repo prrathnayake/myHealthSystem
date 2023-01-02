@@ -1,5 +1,6 @@
 import 'package:e_health/utils/styles.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class AvailableTimeCard extends StatelessWidget {
   const AvailableTimeCard({super.key, required this.availableTime});
@@ -16,11 +17,11 @@ class AvailableTimeCard extends StatelessWidget {
             style: TextStyles.textHeader1.copyWith(fontSize: 20),
           ),
           Text(
-            'at ${availableTime['startTime'].toString()} ',
+            'at ${DateFormat('hh:mm a').format(DateTime.parse('${DateTime.now().year}-${DateTime.now().month < 10 ? ('0${DateTime.now().month}') : DateTime.now().month}-${DateTime.now().day < 10 ? ('0${DateTime.now().day}') : DateTime.now().day} ${availableTime['startTime']}'))} ',
             style: TextStyles.textHeader1.copyWith(fontSize: 20),
           ),
           Text(
-            'to ${availableTime['endTime'].toString()}',
+            'to ${DateFormat('hh:mm a').format(DateTime.parse('${DateTime.now().year}-${DateTime.now().month < 10 ? ('0${DateTime.now().month}') : DateTime.now().month}-${DateTime.now().day < 10 ? ('0${DateTime.now().day}') : DateTime.now().day} ${availableTime['endTime']}'))}',
             style: TextStyles.textHeader1.copyWith(fontSize: 20),
           ),
         ],
