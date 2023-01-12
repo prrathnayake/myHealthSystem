@@ -1,4 +1,4 @@
-import 'package:e_health/screens/disease_predic_screen/disease_predic_screen.dart';
+import 'package:e_health/screens/chat_list_screen/chat_list_screen.dart';
 import 'package:e_health/screens/home_screen/home_screen.dart';
 import 'package:e_health/screens/profile_screen/profile_screen.dart';
 import 'package:e_health/screens/schedule_screen/schedule_screen.dart';
@@ -15,7 +15,7 @@ class _BottomBarState extends State<BottomBar> {
   int _selectedIndex = 0;
   static final List<Widget> _widgetOptions = <Widget>[
     const HomeScreen(),
-    const DiseasePredicScreen(),
+    const ChatListScreen(),
     const ScheduleScreen(),
     const ProfileScreen(),
   ];
