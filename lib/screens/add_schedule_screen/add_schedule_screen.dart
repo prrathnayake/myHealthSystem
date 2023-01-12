@@ -23,6 +23,7 @@ class AddScheduleScreen extends StatefulWidget {
 
 class _AddScheduleScreenState extends State<AddScheduleScreen> {
   List? availableTime;
+  List? schedules;
   String doctorID = '';
   String hospitalID = '';
   DateTime selectedDate = DateTime.now().add(const Duration(days: 1));
@@ -70,6 +71,13 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
   getAvailableTime() async {
     List availableTime = await APImethods()
         .getAvailableTime(doctorID: doctorID, hospitalID: hospitalID);
+
+    return availableTime;
+  }
+
+  getDoctorSchedules(date) async {
+    List availableTime = await APImethods()
+        .getSchedulesByDoctorID(doctorID: doctorID, date: date);
 
     return availableTime;
   }
@@ -149,6 +157,23 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
       return customStackBar(
           context: context,
           text: 'Please start Time cannot be greater than end Time');
+    }
+
+    schedules = getDoctorSchedules(selectedDate);
+
+    for (var schedule in schedules!) {
+      TimeOfDay st = startTime;
+      TimeOfDay et = endTime;
+      final now = DateTime.now();
+
+      DateTime startDateTime =
+          DateTime(now.year, now.month, now.day, st.hour, st.minute);
+      DateTime endDateTime =
+          DateTime(now.year, now.month, now.day, et.hour, et.minute);
+      DateTime availableStartDateTime = DateTime.parse(
+          '${now.year}-${now.month < 10 ? ('0${now.month}') : now.month}-${now.day < 10 ? ('0${now.day}') : now.day} ${schedule['startTime']}');
+      DateTime availableEndDateTime = DateTime.parse(
+          '${now.year}-${now.month < 10 ? ('0${now.month}') : now.month}-${now.day < 10 ? ('0${now.day}') : now.day} ${schedule['endTime']}');
     }
 
     await APImethods().createAppointment(
