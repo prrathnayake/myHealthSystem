@@ -1,27 +1,50 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_health/resources/chat_methods.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class TextComposer extends StatefulWidget {
-  const TextComposer({super.key});
+  const TextComposer(
+      {super.key, required this.roomID, required this.receiverUID});
+  final String receiverUID;
+  final String roomID;
 
   @override
   State<TextComposer> createState() => _TextComposerState();
 }
 
 class _TextComposerState extends State<TextComposer> {
+  late Map<String, dynamic> userCredentials = {'': ''};
   final _textController = TextEditingController();
 
   void _reset() {
     _textController.clear();
   }
 
-  onPress() {
-    ChatMethods().sendMessgae({
-      "message": _textController.text,
-      "senderName": "pasan ransika",
-      'createdOn': FieldValue.serverTimestamp()
+  getData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? json = prefs.getString('userCredentials');
+
+    setState(() {
+      userCredentials = jsonDecode(json!);
     });
+  }
+
+  @override
+  void initState() {
+    getData();
+    super.initState();
+  }
+
+  onPress() {
+    ChatMethods().sendMessge(data: {
+      "message": _textController.text,
+      "senderName": userCredentials['firstName'],
+      "senderUID": userCredentials['uid'],
+      'createdOn': FieldValue.serverTimestamp()
+    }, roomID: widget.roomID, receiverID: widget.receiverUID);
     _reset();
   }
 

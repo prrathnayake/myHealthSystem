@@ -70,12 +70,14 @@ class _ChatListScreenState extends State<ChatListScreen> {
                                 Navigator.of(context).push(MaterialPageRoute(
                                   builder: (context) => ChatScreen(
                                     roomId: snapshot.data!.docs[index].id,
+                                    receiverUID: snapshot.data!.docs[index]
+                                        .get("recieverUID"),
                                   ),
                                 ));
                               },
                               child: ChatCard(
                                 name: snapshot.data!.docs[index]
-                                    .get("senderName"),
+                                    .get("recieverUID"),
                               ),
                             ),
                           );

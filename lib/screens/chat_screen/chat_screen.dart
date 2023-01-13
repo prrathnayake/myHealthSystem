@@ -4,8 +4,10 @@ import 'package:e_health/screens/chat_screen/components/textComposer.dart';
 import 'package:flutter/material.dart';
 
 class ChatScreen extends StatefulWidget {
-  const ChatScreen({super.key, required this.roomId});
+  const ChatScreen(
+      {super.key, required this.roomId, required this.receiverUID});
   final String roomId;
+  final String receiverUID;
 
   @override
   State<ChatScreen> createState() => _ChatScreenState();
@@ -77,7 +79,10 @@ class _ChatScreenState extends State<ChatScreen> {
               decoration: BoxDecoration(
                 color: Theme.of(context).cardColor,
               ),
-              child: const TextComposer(),
+              child: TextComposer(
+                roomID: widget.roomId,
+                receiverUID: widget.receiverUID,
+              ),
             ),
           ],
         ),

@@ -193,16 +193,19 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
               const SizedBox(height: 10),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: doctors == null
-                    ? const Center(child: CircularProgressIndicator())
-                    : Row(
-                        children: doctors!
-                            .map((singleDoctor) =>
-                                DoctorCard(doctor: singleDoctor))
-                            .toList(),
-                      ),
+              SizedBox(
+                height: 200,
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: doctors == null
+                      ? const Center(child: CircularProgressIndicator())
+                      : Row(
+                          children: doctors!
+                              .map((singleDoctor) =>
+                                  DoctorCard(doctor: singleDoctor))
+                              .toList(),
+                        ),
+                ),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -222,16 +225,19 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
               const SizedBox(height: 10),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: hospitals == null
-                    ? const Center(child: CircularProgressIndicator())
-                    : Row(
-                        children: hospitals!
-                            .map((singleHospital) =>
-                                HospitalCard(hospital: singleHospital))
-                            .toList(),
-                      ),
+              SizedBox(
+                height: 200,
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: hospitals == null
+                      ? const Center(child: CircularProgressIndicator())
+                      : Row(
+                          children: hospitals!
+                              .map((singleHospital) =>
+                                  HospitalCard(hospital: singleHospital))
+                              .toList(),
+                        ),
+                ),
               ),
             ],
           ),
