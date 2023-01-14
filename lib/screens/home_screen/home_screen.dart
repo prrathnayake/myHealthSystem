@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:bordered_text/bordered_text.dart';
 import 'package:e_health/components/bottombar.dart';
 import 'package:e_health/resources/api_methods.dart';
+import 'package:e_health/screens/disease_predic_screen/disease_predic_screen.dart';
 import 'package:e_health/screens/e_prescription_screen/e_prescription_screen.dart';
 import 'package:e_health/screens/home_screen/components/doctor_card.dart';
 import 'package:e_health/screens/home_screen/components/hospital_card.dart';
@@ -170,6 +171,24 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ),
                       ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => const DiseasePredicScreen()));
+                    },
+                    child: Text(
+                      'For quick checkup use our AI',
+                      style: TextStyles.textHeader1
+                          .copyWith(fontSize: 25, color: CustomColors.black),
                     ),
                   ),
                 ],
