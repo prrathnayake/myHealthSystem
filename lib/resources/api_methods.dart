@@ -245,4 +245,16 @@ class APImethods {
     doctors = jsonDecode(response.body);
     return doctors;
   }
+
+  Future<List> gethospitalsByID({required String hospitalID}) async {
+    List hospitals;
+    http.Response response = await http.get(
+      Uri.parse('$api/hospitals/id?id=$hospitalID'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+    hospitals = jsonDecode(response.body);
+    return hospitals;
+  }
 }
