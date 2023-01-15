@@ -7,6 +7,7 @@ import 'package:e_health/screens/disease_predic_screen/disease_predic_screen.dar
 import 'package:e_health/screens/doctors_screen/doctors_screen.dart';
 import 'package:e_health/screens/home_screen/components/doctor_card.dart';
 import 'package:e_health/screens/home_screen/components/hospital_card.dart';
+import 'package:e_health/screens/hospitals_screen/hospitals_screen.dart';
 import 'package:e_health/screens/prescription_sreen/prescription_sreen.dart';
 import 'package:e_health/utils/colors.dart';
 import 'package:e_health/utils/styles.dart';
@@ -240,7 +241,10 @@ class _HomeScreenState extends State<HomeScreen> {
                         .copyWith(fontSize: 25, color: CustomColors.black),
                   ),
                   TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => const HospitalsScreen()));
+                      },
                       child: const Text(
                         'See All',
                         style: TextStyle(fontSize: 20),

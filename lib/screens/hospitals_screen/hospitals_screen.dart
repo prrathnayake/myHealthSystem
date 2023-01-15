@@ -1,32 +1,32 @@
 import 'package:e_health/resources/api_methods.dart';
-import 'package:e_health/screens/doctors_screen/components/doctor_card.dart';
+import 'package:e_health/screens/hospitals_screen/components/hospital_card.dart';
 import 'package:flutter/material.dart';
 
-class DoctorsScreen extends StatefulWidget {
-  const DoctorsScreen({super.key});
+class HospitalsScreen extends StatefulWidget {
+  const HospitalsScreen({super.key});
 
   @override
-  State<DoctorsScreen> createState() => _DoctorsScreenState();
+  State<HospitalsScreen> createState() => _HospitalsScreenState();
 }
 
-class _DoctorsScreenState extends State<DoctorsScreen> {
-  List? doctors;
+class _HospitalsScreenState extends State<HospitalsScreen> {
+  List? hospitals;
   bool isLoading = false;
 
   @override
   void initState() {
-    getDoctors();
+    getHospitals();
     super.initState();
   }
 
-  getDoctors() async {
+  getHospitals() async {
     setState(() {
       isLoading = true;
     });
-    List data = await APImethods().getDoctors();
+    List data = await APImethods().getHospitals();
 
     setState(() {
-      doctors = data;
+      hospitals = data;
       isLoading = false;
     });
   }
@@ -35,14 +35,14 @@ class _DoctorsScreenState extends State<DoctorsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: doctors == null
+        child: hospitals == null
             ? const Center(child: CircularProgressIndicator())
             : SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Column(
-                  children: doctors!
+                  children: hospitals!
                       .map((singleDoctor) =>
-                          HorizontalDoctorCard(doctor: singleDoctor))
+                          HorizontalHospitalCard(hospital: singleDoctor))
                       .toList(),
                 ),
               ),
