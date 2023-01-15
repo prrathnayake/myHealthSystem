@@ -21,12 +21,6 @@ jobs:
       run: flutter build apk --release
 
     - name: Email APK
-      uses: sarah/email-action@v1
-      env:
-        GMAIL_USERNAME: ${{ secrets.GMAIL_USERNAME }}
-        GMAIL_PASSWORD: ${{ secrets.GMAIL_PASSWORD }}
-      with:
-        to: example@gmail.com
-        subject: "New Flutter App APK"
-        body: "Attached is the latest APK for the Flutter app."
-        attachments: app/build/app/outputs/apk/release/app-release.apk
+      run: |
+          echo "Sending email with the APK file..."
+          curl --url "smtps://smtp.gmail.com:587" --ssl-reqd   --mail-from ${{ secrets.GMAIL_USERNAME }} --mail-rcpt pasanransika1@gmail.com   --upload-file build/app/outputs/apk/release/app-release.apk   --user ${{ secrets.GMAIL_PASSWORD }} --insecure
