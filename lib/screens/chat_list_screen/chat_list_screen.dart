@@ -71,13 +71,13 @@ class _ChatListScreenState extends State<ChatListScreen> {
                                   builder: (context) => ChatScreen(
                                     roomId: snapshot.data!.docs[index].id,
                                     receiverUID: snapshot.data!.docs[index]
-                                        .get("recieverUID"),
+                                        .get("receiverUID"),
                                   ),
                                 ));
                               },
                               child: ChatCard(
                                 name: snapshot.data!.docs[index]
-                                    .get("recieverUID"),
+                                    .get("receiverUID"),
                               ),
                             ),
                           );
