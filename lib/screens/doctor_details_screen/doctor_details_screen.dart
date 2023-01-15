@@ -17,6 +17,7 @@ class _DoctorDetailsScreenState extends State<DoctorDetailsScreen> {
   List? doctor = [
     {"": ""}
   ];
+  bool isLoading = true;
 
   getDoctorDetails() async {
     List data =
@@ -24,6 +25,7 @@ class _DoctorDetailsScreenState extends State<DoctorDetailsScreen> {
 
     setState(() {
       doctor = data;
+      isLoading = false;
     });
   }
 
@@ -47,75 +49,78 @@ class _DoctorDetailsScreenState extends State<DoctorDetailsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Column(
-          children: <Widget>[
-            // Container(
-            //   width: double.infinity,
-            //   height: 300,
-            //   child: Image.network(
-            //     imageUrl,
-            //     fit: BoxFit.cover,
-            //   ),
-            // ),
-            const SizedBox(height: 20),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Column(
+        child: isLoading
+            ? const Center(child: CircularProgressIndicator())
+            : Column(
                 children: <Widget>[
-                  Text(
-                    doctor![0]['firstName'],
-                    style: const TextStyle(
-                      fontSize: 26,
-                      fontWeight: FontWeight.bold,
+                  // Container(
+                  //   width: double.infinity,
+                  //   height: 300,
+                  //   child: Image.network(
+                  //     imageUrl,
+                  //     fit: BoxFit.cover,
+                  //   ),
+                  // ),
+                  const SizedBox(height: 20),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Column(
+                      children: <Widget>[
+                        Text(
+                          doctor![0]['firstName'],
+                          style: const TextStyle(
+                            fontSize: 26,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        Text(
+                          doctor![0]['areaID'].toString(),
+                          style: const TextStyle(
+                            fontSize: 18,
+                            color: Colors.grey,
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        Text(
+                          doctor![0]['email'],
+                          style: const TextStyle(
+                            fontSize: 18,
+                            color: Colors.grey,
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        Text(
+                          doctor![0]['mobile'],
+                          style: const TextStyle(
+                            fontSize: 18,
+                            color: Colors.grey,
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        Text(
+                          doctor![0]['area'].toString(),
+                          style: const TextStyle(
+                            fontSize: 18,
+                            color: Colors.grey,
+                          ),
+                        ),
+                        IconButton(
+                            onPressed: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => ChatScreen(
+                                        roomId:
+                                            '${userCredentials['uid']}${doctor![0]['firebaseUID']}',
+                                        receiverUID:
+                                            '${doctor![0]['firebaseUID']}',
+                                      )));
+                            },
+                            icon: const Icon(Icons.message))
+                      ],
                     ),
                   ),
-                  const SizedBox(height: 10),
-                  Text(
-                    doctor![0]['areaID'].toString(),
-                    style: const TextStyle(
-                      fontSize: 18,
-                      color: Colors.grey,
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  Text(
-                    doctor![0]['email'],
-                    style: const TextStyle(
-                      fontSize: 18,
-                      color: Colors.grey,
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  Text(
-                    doctor![0]['mobile'],
-                    style: const TextStyle(
-                      fontSize: 18,
-                      color: Colors.grey,
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  Text(
-                    doctor![0]['firebaseUID'].toString(),
-                    style: const TextStyle(
-                      fontSize: 18,
-                      color: Colors.grey,
-                    ),
-                  ),
-                  IconButton(
-                      onPressed: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => ChatScreen(
-                                  roomId:
-                                      '${userCredentials['uid']}${doctor![0]['firebaseUID']}',
-                                  receiverUID: '${doctor![0]['firebaseUID']}',
-                                )));
-                      },
-                      icon: const Icon(Icons.message))
                 ],
               ),
-            ),
-          ],
-        ),
       ),
     );
   }

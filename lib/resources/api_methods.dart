@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
 class APImethods {
-  static String api = 'https://407c-175-157-42-75.ap.ngrok.io';
+  static String api = 'http://172.105.58.35:3001';
 
   Future<List> getSchedules() async {
     List schedules;
