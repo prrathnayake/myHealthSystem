@@ -7,6 +7,7 @@ import 'package:e_health/screens/disease_predic_screen/disease_predic_screen.dar
 import 'package:e_health/screens/e_prescription_screen/e_prescription_screen.dart';
 import 'package:e_health/screens/home_screen/components/doctor_card.dart';
 import 'package:e_health/screens/home_screen/components/hospital_card.dart';
+import 'package:e_health/screens/prescription_sreen/prescription_sreen.dart';
 import 'package:e_health/utils/colors.dart';
 import 'package:e_health/utils/styles.dart';
 import 'package:flutter/material.dart';
@@ -142,7 +143,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   GestureDetector(
                     onTap: () {
                       Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => const EPrescriptionScreen()));
+                          builder: (context) => const PrescriptionScreen()));
                     },
                     child: Container(
                       width: 180,

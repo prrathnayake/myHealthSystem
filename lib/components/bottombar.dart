@@ -52,9 +52,9 @@ class _BottomBarState extends State<BottomBar> {
             activeIcon: Icon(Icons.home_rounded),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.search_outlined),
-            label: "News Feed",
-            activeIcon: Icon(Icons.search_rounded),
+            icon: Icon(Icons.message_outlined),
+            label: "Chat",
+            activeIcon: Icon(Icons.message_rounded),
           ),
           BottomNavigationBarItem(
             icon: Icon(
