@@ -16,6 +16,9 @@ jobs:
       uses: subosito/flutter-action@v1
       with:
         flutter-version: 1.22.x
+        
+    - name: Flutter Upgrade
+      run: flutter upgrade
 
     - name: Build APK
       run: flutter build apk --release
