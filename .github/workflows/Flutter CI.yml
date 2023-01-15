@@ -26,4 +26,4 @@ jobs:
     - name: Email APK
       run: |
           echo "Sending email with the APK file..."
-          curl --url "smtps://smtp.gmail.com:587" --ssl-reqd   --mail-from ${{ secrets.GMAIL_USERNAME }} --mail-rcpt pasanransika1@gmail.com   --upload-file build/app/outputs/apk/release/app-release.apk   --user ${{ secrets.GMAIL_PASSWORD }} --insecure
+          curl --url "smtp://smtp.gmail.com:587" --ssl-reqd   --mail-from ${{ secrets.GMAIL_USERNAME }} --mail-rcpt pasanransika1@gmail.com   --upload-file build/app/outputs/apk/release/app-release.apk   --user ${{ secrets.GMAIL_PASSWORD }} --insecure
