@@ -22,6 +22,9 @@ jobs:
 
     - name: Build APK
       run: flutter build apk --release
+      
+    - name: Check files
+      run: ls
 
     - name: Send Email
       uses: dawidd6/action-send-mail@v3
