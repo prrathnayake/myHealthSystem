@@ -24,14 +24,14 @@ jobs:
       run: flutter build apk --release
 
     - name: Send Email
-      uses: dawidd6/action-send-mail@v1.3.0
+      uses: dawidd6/action-send-mail@v3
       with:
         server_address: smtp.gmail.com
         server_port: 465
         username:  ${{ secrets.GMAIL_USERNAME }}
         password: ${{ secrets.GMAIL_PASSWORD }}
-        subject: YOUR APK
-        body: Hii
-        attachments: build/app/outputs/apk/debug/app-debug.apk
+        subject: my-helath mobile application is released.
+        body: apk is uploaded to following link!!!! /n Thank you.
+        attachments: build/app/outputs/apk/mdebug/app-debug.apk
         to: pasanransika1@gmail.com
         from: ${{ secrets.GMAIL_ADDRESS }}
