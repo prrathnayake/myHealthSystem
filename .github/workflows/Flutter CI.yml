@@ -44,8 +44,12 @@ jobs:
         subject: my-helath mobile application is released.
         body: |
           Hello,
+          
           Your Flutter app's APK is ready for download.
-          "https://github.com/$GITHUB_REPOSITORY/actions/artifacts/master/download?job=$GITHUB_JOB"
-          Thak you
+          From following link you can download the latest APK for the Flutter app.
+          
+          Download link - https://github.com/${{ GITHUB_REPOSITORY }}/actions/artifacts/master/download?job=${{ GITHUB_JOB }}
+          
+          Thank you
         to: ${{ secrets.SEND_GMAIL_ADDRESS }}
         from: ${{ secrets.GMAIL_ADDRESS }}
