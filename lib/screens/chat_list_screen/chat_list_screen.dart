@@ -72,12 +72,14 @@ class _ChatListScreenState extends State<ChatListScreen> {
                                     roomId: snapshot.data!.docs[index].id,
                                     receiverUID: snapshot.data!.docs[index]
                                         .get("receiverUID"),
+                                    receiverName: snapshot.data!.docs[index]
+                                        .get("receiverName"),
                                   ),
                                 ));
                               },
                               child: ChatCard(
                                 name: snapshot.data!.docs[index]
-                                    .get("receiverUID"),
+                                    .get("receiverName"),
                               ),
                             ),
                           );

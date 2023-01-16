@@ -7,8 +7,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class TextComposer extends StatefulWidget {
   const TextComposer(
-      {super.key, required this.roomID, required this.receiverUID});
+      {super.key,
+      required this.roomID,
+      required this.receiverUID,
+      required this.receiverName});
   final String receiverUID;
+  final String receiverName;
   final String roomID;
 
   @override
@@ -39,12 +43,16 @@ class _TextComposerState extends State<TextComposer> {
   }
 
   onPress() {
-    ChatMethods().sendMessge(data: {
-      "message": _textController.text,
-      "senderName": userCredentials['firstName'],
-      "senderUID": userCredentials['uid'],
-      'createdOn': FieldValue.serverTimestamp()
-    }, roomID: widget.roomID, receiverID: widget.receiverUID);
+    ChatMethods().sendMessge(
+        data: {
+          "message": _textController.text,
+          "senderName": userCredentials['firstName'],
+          "senderUID": userCredentials['uid'],
+          'createdOn': FieldValue.serverTimestamp()
+        },
+        roomID: widget.roomID,
+        receiverID: widget.receiverUID,
+        receiverName: widget.receiverName);
     _reset();
   }
 

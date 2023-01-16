@@ -6,7 +6,8 @@ class ChatMethods {
   Future<void> sendMessge(
       {required Map<String, dynamic> data,
       required roomID,
-      required receiverID}) async {
+      required receiverID,
+      required receiverName}) async {
     await _firestore
         .collection("chats")
         .doc(roomID)
@@ -18,15 +19,22 @@ class ChatMethods {
         .doc(data['senderUID'])
         .collection("chats")
         .doc(roomID)
-        .set({"lastMessage": data['message'], "recieverUID": receiverID});
+        .set({
+      "lastMessage": data['message'],
+      "receiverUID": receiverID,
+      "receiverName": receiverName
+    });
 
     await _firestore
-        .collection("users")
+        .collection("doctors")
         .doc(receiverID)
         .collection("chats")
         .doc(roomID)
-        .set(
-            {"lastMessage": data['message'], "recieverUID": data['senderUID']});
+        .set({
+      "lastMessage": data['message'],
+      "receiverUID": data['senderUID'],
+      "receiverName": data['senderName']
+    });
   }
 
   // Future<List<Map<String, dynamic>>> getMessages({required docID}) async {

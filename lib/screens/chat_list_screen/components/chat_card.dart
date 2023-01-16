@@ -19,7 +19,7 @@ class ChatCard extends StatelessWidget {
           const SizedBox(width: 10),
           Flexible(
             child: Text(
-              name,
+              'Dr. $name',
               overflow: TextOverflow.ellipsis,
             ),
           ),

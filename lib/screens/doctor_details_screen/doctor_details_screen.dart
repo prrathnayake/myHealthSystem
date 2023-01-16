@@ -113,6 +113,8 @@ class _DoctorDetailsScreenState extends State<DoctorDetailsScreen> {
                                             '${userCredentials['uid']}${doctor![0]['firebaseUID']}',
                                         receiverUID:
                                             '${doctor![0]['firebaseUID']}',
+                                        receiverName:
+                                            '${doctor![0]['firstName']} ${doctor![0]['lastName']}',
                                       )));
                             },
                             icon: const Icon(Icons.message))

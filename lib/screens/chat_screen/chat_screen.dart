@@ -5,9 +5,13 @@ import 'package:flutter/material.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen(
-      {super.key, required this.roomId, required this.receiverUID});
+      {super.key,
+      required this.roomId,
+      required this.receiverUID,
+      required this.receiverName});
   final String roomId;
   final String receiverUID;
+  final String receiverName;
 
   @override
   State<ChatScreen> createState() => _ChatScreenState();
@@ -80,9 +84,9 @@ class _ChatScreenState extends State<ChatScreen> {
                 color: Theme.of(context).cardColor,
               ),
               child: TextComposer(
-                roomID: widget.roomId,
-                receiverUID: widget.receiverUID,
-              ),
+                  roomID: widget.roomId,
+                  receiverUID: widget.receiverUID,
+                  receiverName: widget.receiverName),
             ),
           ],
         ),
