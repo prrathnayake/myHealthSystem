@@ -23,8 +23,14 @@ jobs:
     - name: Build APK
       run: flutter build apk --release
 
-    - name: Email APK
-      run: |
-          echo "Sending email with the APK file..."
-          curl --url "smtp://smtp.gmail.com:587" --tlsv1.2 --mail-from ${{ secrets.GMAIL_USERNAME }} --mail-rcpt pasanransika1@gmail.com   --upload-file build/app/outputs/apk/release/app-release.apk   --user ${{ secrets.GMAIL_USERNAME }}:${{ secrets.GMAIL_PASSWORD }} --insecure -v --mail-auth ${{ secrets.GMAIL_USERNAME }}
-     
+    - name: Send Email
+      uses: dawidd6/action-send-mail@v1.3.0
+      with:
+        server_address: smtp.gmail.com
+        server_port: 465
+        username: quadmx08
+        password: ${{ secrets.GMAIL_PASSWORD }}
+        subject: YOUR APK
+        body: Hii
+        to: pasanransika1@gmail.com
+        from: ${{ secrets.GMAIL_USERNAME }}
