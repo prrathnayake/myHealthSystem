@@ -45,6 +45,6 @@ jobs:
           Your Flutter app's APK is ready for download.
           APK for android users is also attached with this email.
           Thank you.
-        attachments: app-debug.zip
+        attachments: ./build/app/outputs/apk/debug.zip
         to: ${{ secrets.SEND_GMAIL_ADDRESS }}
         from: ${{ secrets.GMAIL_ADDRESS }}
