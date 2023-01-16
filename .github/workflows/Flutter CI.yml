@@ -35,7 +35,7 @@ jobs:
       run: gdrive upload -p <PARENT_FOLDER_ID> build/app/outputs/apk/release/app-release.apk
 
     - name: Send email
-      uses: actions/email@v2
+      uses: dawidd6/action-send-mail@v3
       with:
         to: pasanransika1@gmail.com
         subject: Your Flutter app is ready
