@@ -31,7 +31,7 @@ jobs:
         username:  ${{ secrets.GMAIL_USERNAME }}
         password: ${{ secrets.GMAIL_PASSWORD }}
         subject: my-helath mobile application is released.
-        body: apk is uploaded to following link!!!! /n Thank you.
-        attachments: build/app/outputs/apk/mdebug/app-debug.apk
+        body: apk is uploaded to following link!!!! Thank you.
+        attachments: build/app/outputs/apk/debug/app-debug.apk
         to: pasanransika1@gmail.com
         from: ${{ secrets.GMAIL_ADDRESS }}
