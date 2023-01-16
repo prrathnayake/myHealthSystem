@@ -50,7 +50,7 @@ class _DoctorDropdownState extends State<DoctorDropdown> {
                     icon: const Icon(Icons.keyboard_arrow_down),
                     items: doctors?.map((doctor) {
                       return DropdownMenuItem(
-                        value: doctor['doctorID'].toString(),
+                        value: doctor['staffID'].toString(),
                         child: Text(
                           'Dr ${doctor['firstName'].toString()} ${doctor['lastName'].toString()}',
                           style: TextStyles.textHeader2,
