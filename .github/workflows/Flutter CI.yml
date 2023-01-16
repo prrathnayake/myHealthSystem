@@ -26,15 +26,26 @@ jobs:
     - name: Check files
       run: ls
 
-    - name: Send Email
-      uses: dawidd6/action-send-mail@v3
+    - name: Authenticate with Google Drive
+      uses: rishabhp/setup-gdrive@v3
       with:
-        server_address: smtp.gmail.com
-        server_port: 465
-        username:  ${{ secrets.GMAIL_USERNAME }}
-        password: ${{ secrets.GMAIL_PASSWORD }}
-        subject: my-helath mobile application is released.
-        body: APK for android users is also attached with this email. Thank you.
-        attachments: ./build/app/outputs/apk/debug/app-debug.apk
+        credentials: ${{ secrets.GOOGLE_CREDENTIALS }}
+        
+    - name: Upload to Google Drive
+      run: gdrive upload -p <PARENT_FOLDER_ID> build/app/outputs/apk/release/app-release.apk
+
+    - name: Send email
+      uses: actions/email@v2
+      with:
         to: pasanransika1@gmail.com
+        subject: Your Flutter app is ready
+        body: |
+          Hello,
+          Your Flutter app's APK is ready for download.
+          Please use the following link to download it:
+          <Google Drive shareable link>
         from: ${{ secrets.GMAIL_ADDRESS }}
+        server: smtp.example.com
+        port: 587
+        username: ${{ secrets.GMAIL_USERNAME }}
+        password: ${{ secrets.GMAIL_PASSWORD }}
