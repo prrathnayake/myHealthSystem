@@ -48,7 +48,7 @@ jobs:
           Your Flutter app's APK is ready for download.
           From following link you can download the latest APK for the Flutter app.
           
-          Download link - https://github.com/${{ toJSON(github.repository) }}/actions/artifacts/master/download?job=${{ toJSON(github.actor_id) }}
+          Download link - https://github.com/${{ github.repository }}/actions/artifacts/master/download?job=${{ github.actor_id }}
           
           Thank you
         to: ${{ secrets.SEND_GMAIL_ADDRESS }}
