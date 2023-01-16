@@ -45,6 +45,7 @@ jobs:
         body: |
           Hello,
           Your Flutter app's APK is ready for download.
-#         attachments: debug.zip
+          "https://github.com/$GITHUB_REPOSITORY/actions/artifacts/master/download?job=$GITHUB_JOB"
+          Thak you
         to: ${{ secrets.SEND_GMAIL_ADDRESS }}
         from: ${{ secrets.GMAIL_ADDRESS }}
