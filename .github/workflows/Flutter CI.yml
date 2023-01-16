@@ -21,19 +21,13 @@ jobs:
       run: flutter upgrade
 
     - name: Build APK
-      run: flutter build apk --release
+      run: flutter run
       
     - name: Install zip unzip
       run: sudo apt install zip unzip
       
-    - name: CD to build apk
-      run: cd build/app/outputs/apk
-      
-    - name: View files
-      run: ls
-      
     - name: Compress APK
-      run: zip -r release.zip release
+      run: zip -r debug.zip ./build/app/outputs/apk/debug
 
     - name: Send email
       uses: dawidd6/action-send-mail@v3
