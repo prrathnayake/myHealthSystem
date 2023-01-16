@@ -23,14 +23,17 @@ jobs:
     - name: Build APK
       run: flutter build apk --release
       
+    - name: Install zip unzip
+      run: sudo apt install zip unzip
+      
     - name: CD to build apk
-      run: cd ./build/app/outputs/apk/debug
+      run: cd build/app/outputs/apk
       
     - name: View files
       run: ls
       
     - name: Compress APK
-      run: zip -r app-debug.zip app-debug.apk
+      run: zip -r release.zip release
 
     - name: Send email
       uses: dawidd6/action-send-mail@v3
