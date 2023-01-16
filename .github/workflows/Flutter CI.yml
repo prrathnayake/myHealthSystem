@@ -26,11 +26,11 @@ jobs:
     - name: Install zip unzip
       run: sudo apt install zip unzip tree
       
-    - name: File tree view
-      run: tree
-      
     - name: Compress APK
       run: zip -r debug.zip ./build/app/outputs/apk/debug
+      
+    - name: File tree view
+      run: tree
 
     - name: Send email
       uses: dawidd6/action-send-mail@v3
@@ -45,6 +45,6 @@ jobs:
           Your Flutter app's APK is ready for download.
           APK for android users is also attached with this email.
           Thank you.
-        attachments: ./build/app/outputs/apk/debug.zip
+        attachments: debug.zip
         to: ${{ secrets.SEND_GMAIL_ADDRESS }}
         from: ${{ secrets.GMAIL_ADDRESS }}
