@@ -51,7 +51,7 @@ class _ScheduleDetailCardState extends State<ScheduleDetailCard> {
                         style: TextStyles.textHeader2,
                       ),
                       Text(
-                        '${widget.schedule['area']}',
+                        '${widget.schedule['discription']}',
                         style: TextStyles.regulerText,
                       ),
                     ],

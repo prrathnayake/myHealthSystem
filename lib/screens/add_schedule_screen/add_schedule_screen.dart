@@ -159,22 +159,22 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
           text: 'Please start Time cannot be greater than end Time');
     }
 
-    schedules = getDoctorSchedules(selectedDate);
+    // schedules = getDoctorSchedules(selectedDate);
 
-    for (var schedule in schedules!) {
-      TimeOfDay st = startTime;
-      TimeOfDay et = endTime;
-      final now = DateTime.now();
+    // for (var schedule in schedules!) {
+    //   TimeOfDay st = startTime;
+    //   TimeOfDay et = endTime;
+    //   final now = DateTime.now();
 
-      DateTime startDateTime =
-          DateTime(now.year, now.month, now.day, st.hour, st.minute);
-      DateTime endDateTime =
-          DateTime(now.year, now.month, now.day, et.hour, et.minute);
-      DateTime availableStartDateTime = DateTime.parse(
-          '${now.year}-${now.month < 10 ? ('0${now.month}') : now.month}-${now.day < 10 ? ('0${now.day}') : now.day} ${schedule['startTime']}');
-      DateTime availableEndDateTime = DateTime.parse(
-          '${now.year}-${now.month < 10 ? ('0${now.month}') : now.month}-${now.day < 10 ? ('0${now.day}') : now.day} ${schedule['endTime']}');
-    }
+    //   DateTime startDateTime =
+    //       DateTime(now.year, now.month, now.day, st.hour, st.minute);
+    //   DateTime endDateTime =
+    //       DateTime(now.year, now.month, now.day, et.hour, et.minute);
+    //   DateTime availableStartDateTime = DateTime.parse(
+    //       '${now.year}-${now.month < 10 ? ('0${now.month}') : now.month}-${now.day < 10 ? ('0${now.day}') : now.day} ${schedule['startTime']}');
+    //   DateTime availableEndDateTime = DateTime.parse(
+    //       '${now.year}-${now.month < 10 ? ('0${now.month}') : now.month}-${now.day < 10 ? ('0${now.day}') : now.day} ${schedule['endTime']}');
+    // }
 
     await APImethods().createAppointment(
       doctorID: doctorID,

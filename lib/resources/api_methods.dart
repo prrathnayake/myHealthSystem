@@ -5,7 +5,8 @@ import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
 class APImethods {
-  static String api = 'http://172.105.58.35:3001';
+  static String api =
+      'https://28bc-175-157-46-159.in.ngrok.io'; //http://172.105.58.35:3001
 
   Future<List> getSchedules() async {
     List schedules;
@@ -89,7 +90,7 @@ class APImethods {
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: jsonEncode(<String, String>{
-          'doctorID': doctorID,
+          'staffID': doctorID,
           'patientUid': uid,
           'hospitalID': hospitalID,
           'dateNow': DateFormat('yyyy-MM-dd HH:mm:ss')
