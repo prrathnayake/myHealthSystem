@@ -43,12 +43,12 @@ class HospitalCard extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
-                  children: const [
-                    Icon(Icons.star),
-                    SizedBox(width: 1),
+                  children: [
+                    const Icon(Icons.star),
+                    const SizedBox(width: 1),
                     Text(
-                      '8.9',
-                      style: TextStyle(fontSize: 20),
+                      ' ${hospital['rate']}',
+                      style: const TextStyle(fontSize: 20),
                     )
                   ],
                 )
