@@ -1,3 +1,4 @@
+import 'package:e_health/components/CustomStackBar.dart';
 import 'package:e_health/resources/api_methods.dart';
 import 'package:e_health/screens/disease_predic_screen/components/symptom_card.dart';
 import 'package:e_health/utils/colors.dart';
@@ -163,6 +164,10 @@ class _DiseasePredicScreenState extends State<DiseasePredicScreen> {
   }
 
   onSubmit() async {
+    if (selectedSymptoms.length < 6) {
+      return customStackBar(
+          context: context, text: 'Please select select atleast 5 symptoms');
+    }
     setState(() {
       isLoading = true;
     });
@@ -214,8 +219,18 @@ class _DiseasePredicScreenState extends State<DiseasePredicScreen> {
                           }).toList(),
                         ),
                       )
-                    : const Expanded(
-                        child: Center(child: CircularProgressIndicator())),
+                    : Expanded(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const [
+                            Text(
+                              'Please wait.',
+                            ),
+                            SizedBox(height: 10),
+                            CircularProgressIndicator(),
+                          ],
+                        ),
+                      ),
               ],
             ),
             predicDisease != null
@@ -246,7 +261,8 @@ class _DiseasePredicScreenState extends State<DiseasePredicScreen> {
                                 'According to prediction....',
                               ),
                               const SizedBox(height: 10),
-                              Text('You have ${predicDisease.toString()}'),
+                              Text(
+                                  'You might have ${predicDisease.toString()}'),
                             ],
                           ),
                         ),
