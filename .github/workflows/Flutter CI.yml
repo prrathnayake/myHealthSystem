@@ -34,9 +34,12 @@ jobs:
         name: release-apk
         path:  build/app/outputs/apk/release/app-release.apk
         
+    - name: Fetch all remote branches
+      run: git fetch --all
+      
     - name: Print latest commits
       run: |
-        git log -n 10 > commits.txt
+        git log origin/master..HEAD > commits.txt
         
     - name: Send email
       uses: dawidd6/action-send-mail@v3
