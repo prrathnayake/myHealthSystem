@@ -1,3 +1,4 @@
+import 'package:e_health/components/CustomStackBar.dart';
 import 'package:e_health/components/bottombar.dart';
 import 'package:e_health/resources/api_methods.dart';
 import 'package:e_health/screens/reschedule_screen.dart/reschedule_screen.dart';
@@ -110,22 +111,29 @@ class _ScheduleDetailCardState extends State<ScheduleDetailCard> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   GestureDetector(
-                    onTap: () => showDialog<String>(
-                      context: context,
-                      builder: (BuildContext context) => AlertDialog(
-                        content: const Text(
-                            'Are you sure, Do you want to cansle this appointment?'),
-                        actions: <Widget>[
-                          TextButton(
-                            onPressed: () => Navigator.pop(context, 'Cancel'),
-                            child: const Text('Cancel'),
-                          ),
-                          TextButton(
-                              onPressed: cancelAppointment,
-                              child: const Text('Sure')),
-                        ],
-                      ),
-                    ),
+                    onTap: widget.schedule['status'] == 'Cancled'
+                        ? () {
+                            customStackBar(
+                                context: context,
+                                text: 'You appointment is already cancled');
+                          }
+                        : () => showDialog<String>(
+                              context: context,
+                              builder: (BuildContext context) => AlertDialog(
+                                content: const Text(
+                                    'Are you sure, Do you want to cansle this appointment?'),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.pop(context, 'Cancel'),
+                                    child: const Text('Cancel'),
+                                  ),
+                                  TextButton(
+                                      onPressed: cancelAppointment,
+                                      child: const Text('Sure')),
+                                ],
+                              ),
+                            ),
                     child: Container(
                       width: 140,
                       height: 50,
@@ -138,12 +146,19 @@ class _ScheduleDetailCardState extends State<ScheduleDetailCard> {
                   ),
                   const SizedBox(width: 20),
                   GestureDetector(
-                    onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => RescheduleScreen(
-                                scheduleID: widget.schedule['scheduleID'],
-                              )));
-                    },
+                    onTap: widget.schedule['status'] == 'Cancled'
+                        ? () {
+                            customStackBar(
+                                context: context,
+                                text:
+                                    'This appointment is cancled. You cannot reschedule this.');
+                          }
+                        : () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => RescheduleScreen(
+                                      scheduleID: widget.schedule['scheduleID'],
+                                    )));
+                          },
                     child: Container(
                       width: 140,
                       height: 50,
