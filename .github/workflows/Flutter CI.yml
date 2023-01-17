@@ -51,7 +51,6 @@ jobs:
           Download link - https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
           
           Thank you
-        attachments: commits.txt
         to: ${{ secrets.SEND_GMAIL_ADDRESS }}
         from: ${{ secrets.GMAIL_ADDRESS }}
         cc: ${{ secrets.GMAIL_ADDRESS_JASON }}
