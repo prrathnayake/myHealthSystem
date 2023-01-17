@@ -194,14 +194,42 @@ class _DiseasePredicScreenState extends State<DiseasePredicScreen> {
             Column(
               children: [
                 Padding(
+                  padding: const EdgeInsets.only(top: 10, left: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(
+                        'What are your',
+                        style: TextStyles.textHeader1.copyWith(
+                          fontSize: 40,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(
+                        'symptoms?',
+                        style: TextStyles.textHeader1.copyWith(
+                          fontSize: 40,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
                   padding: const EdgeInsets.all(10),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Text(
-                        'What\'s your symptoms?',
+                        'Select more than 5 symptoms from following list',
                         style: TextStyles.textHeader1.copyWith(
-                          fontSize: 40,
+                          fontSize: 20,
                         ),
                       ),
                     ],
