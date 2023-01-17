@@ -21,12 +21,20 @@ jobs:
       run: flutter upgrade
 
     - name: Build APK
-      run: flutter build apk --release
+      run:  flutter build apk --release
       
-    - name: Check files
-      run: ls
-
-    - name: Send Email
+#     - name: Install zip unzip
+#       run: sudo apt install zip unzip tree
+      
+#     - name: Compress APK
+#       run: zip -r debug.zip ./build/app/outputs/apk/debug
+      
+    - uses: actions/upload-artifact@v1
+      with:
+        name: release-apk
+        path:  build/app/outputs/apk/release/app-release.apk
+        
+    - name: Send email
       uses: dawidd6/action-send-mail@v3
       with:
         server_address: smtp.gmail.com
@@ -34,7 +42,15 @@ jobs:
         username:  ${{ secrets.GMAIL_USERNAME }}
         password: ${{ secrets.GMAIL_PASSWORD }}
         subject: my-helath mobile application is released.
-        body: apk is uploaded to following link!!!! Thank you.
-        attachments: build/app/outputs/apk/debug/app-debug.apk
-        to: pasanransika1@gmail.com
+        body: |
+          Hello,
+          
+          Your Flutter app's APK is ready for download.
+          From following link you can download the latest APK for the Flutter app.
+          
+          Download link - https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          
+          Thank you
+        to: ${{ secrets.SEND_GMAIL_ADDRESS }}
         from: ${{ secrets.GMAIL_ADDRESS }}
+        cc: ${{ secrets.GMAIL_ADDRESS_JASON }}
