@@ -1,11 +1,13 @@
 import 'dart:convert';
 
+import 'package:e_health/components/CustomStackBar.dart';
+import 'package:e_health/components/bottombar.dart';
 import 'package:e_health/resources/api_methods.dart';
+import 'package:e_health/screens/add_schedule_screen/components/availableTime_card.dart';
 import 'package:e_health/screens/add_schedule_screen/components/date_field.dart';
 import 'package:e_health/screens/add_schedule_screen/components/doctor_dropdown.dart';
 import 'package:e_health/screens/add_schedule_screen/components/hospital_dropdown.dart';
 import 'package:e_health/screens/add_schedule_screen/components/time_field.dart';
-import 'package:e_health/screens/schedule_screen/schedule_screen.dart';
 import 'package:e_health/utils/colors.dart';
 import 'package:e_health/utils/styles.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +23,7 @@ class RescheduleScreen extends StatefulWidget {
 }
 
 class _RescheduleScreenState extends State<RescheduleScreen> {
+  List? availableTime;
   List? schedule;
   bool isLoading = false;
   String doctorID = '';
@@ -38,7 +41,7 @@ class _RescheduleScreenState extends State<RescheduleScreen> {
 
     setState(() {
       schedule = data;
-      doctorID = data[0]['doctorID'].toString();
+      doctorID = data[0]['staffID'].toString();
       hospitalID = data[0]['hospitalID'].toString();
       selectedDate = DateTime.parse(data[0]['appointmentDate']).toLocal();
       startTime = TimeOfDay.fromDateTime(DateTime.parse(
@@ -87,29 +90,98 @@ class _RescheduleScreenState extends State<RescheduleScreen> {
   }
 
   updateAppointment() async {
+    setState(() {
+      isLoading = true;
+    });
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? json = prefs.getString('userCredentials');
     Map<String, dynamic> userCredentials = jsonDecode(json!);
 
     if (doctorID == '') {
-      return ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('Please select a doctor'),
-      ));
+      setState(() {
+        isLoading = false;
+      });
+      return customStackBar(context: context, text: 'Please select a doctor');
     }
 
     if (hospitalID == '') {
-      return ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('Please select a hospital'),
-      ));
+      setState(() {
+        isLoading = false;
+      });
+      return customStackBar(context: context, text: 'Please select a hospital');
+    }
+
+    bool dayMatched = false;
+    for (var day in availableTime!) {
+      if (DateFormat('EEEE').format(selectedDate) == day['dayOfWeek']) {
+        dayMatched = true;
+        TimeOfDay st = startTime;
+        TimeOfDay et = endTime;
+        final now = DateTime.now();
+
+        DateTime startDateTime =
+            DateTime(now.year, now.month, now.day, st.hour, st.minute);
+        DateTime endDateTime =
+            DateTime(now.year, now.month, now.day, et.hour, et.minute);
+        DateTime availableStartDateTime = DateTime.parse(
+            '${now.year}-${now.month < 10 ? ('0${now.month}') : now.month}-${now.day < 10 ? ('0${now.day}') : now.day} ${day['startTime']}');
+        DateTime availableEndDateTime = DateTime.parse(
+            '${now.year}-${now.month < 10 ? ('0${now.month}') : now.month}-${now.day < 10 ? ('0${now.day}') : now.day} ${day['endTime']}');
+
+        if (startDateTime.hour < availableStartDateTime.hour ||
+            endDateTime.hour > availableEndDateTime.hour ||
+            (startDateTime.hour == availableStartDateTime.hour &&
+                startDateTime.minute < availableStartDateTime.minute) ||
+            (endDateTime.hour == availableEndDateTime.hour &&
+                endDateTime.minute > availableEndDateTime.minute)) {
+          setState(() {
+            isLoading = false;
+          });
+          return customStackBar(
+              context: context,
+              text:
+                  'Doctor only available at ${DateFormat('hh:mm a').format(availableStartDateTime)} to ${DateFormat('hh:mm a').format(availableEndDateTime)}');
+        }
+      }
+    }
+
+    if (!dayMatched) {
+      setState(() {
+        isLoading = false;
+      });
+      return customStackBar(
+          context: context,
+          text:
+              'Doctor doesn\'t available in ${DateFormat('EEEE').format(selectedDate)}');
     }
 
     if (startTime.hour > endTime.hour ||
         (startTime.hour == endTime.hour &&
             startTime.minute >= endTime.minute)) {
-      return ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('Please start Time cannot be greater than end Time'),
-      ));
+      setState(() {
+        isLoading = false;
+      });
+      return customStackBar(
+          context: context,
+          text: 'Please start Time cannot be greater than end Time');
     }
+
+    // schedules = getDoctorSchedules(selectedDate);
+
+    // for (var schedule in schedules!) {
+    //   TimeOfDay st = startTime;
+    //   TimeOfDay et = endTime;
+    //   final now = DateTime.now();
+
+    //   DateTime startDateTime =
+    //       DateTime(now.year, now.month, now.day, st.hour, st.minute);
+    //   DateTime endDateTime =
+    //       DateTime(now.year, now.month, now.day, et.hour, et.minute);
+    //   DateTime availableStartDateTime = DateTime.parse(
+    //       '${now.year}-${now.month < 10 ? ('0${now.month}') : now.month}-${now.day < 10 ? ('0${now.day}') : now.day} ${schedule['startTime']}');
+    //   DateTime availableEndDateTime = DateTime.parse(
+    //       '${now.year}-${now.month < 10 ? ('0${now.month}') : now.month}-${now.day < 10 ? ('0${now.day}') : now.day} ${schedule['endTime']}');
+    // }
 
     await APImethods().updateAppointment(
       scheduleID: widget.scheduleID.toString(),
@@ -121,11 +193,29 @@ class _RescheduleScreenState extends State<RescheduleScreen> {
       endTime: endTime,
       description: _discriptionController.text,
     );
-    Navigator.of(context).pop();
+    setState(() {
+      isLoading = false;
+    });
+    Navigator.of(context).pushReplacement(MaterialPageRoute(
+        builder: (context) => const BottomBar(
+              passIndex: 2,
+            )));
   }
 
   @override
   Widget build(BuildContext context) {
+    if (doctorID != '' && hospitalID != '') {
+      getAvailableTime() async {
+        List time = await APImethods()
+            .getAvailableTime(doctorID: doctorID, hospitalID: hospitalID);
+
+        setState(() {
+          availableTime = time;
+        });
+      }
+
+      getAvailableTime();
+    }
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: SafeArea(
@@ -155,6 +245,48 @@ class _RescheduleScreenState extends State<RescheduleScreen> {
                             HospitalDropdown(
                               hospitalID: hospitalID,
                               getFuc: refreshHospitalID,
+                            ),
+                            Container(
+                              padding: const EdgeInsets.symmetric(vertical: 10),
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color:
+                                      CustomColors.black, // red as border color
+                                ),
+                              ),
+                              child: Column(
+                                children: [
+                                  Text(
+                                    'Doctor Availablity',
+                                    style: TextStyles.textHeader1
+                                        .copyWith(fontSize: 20),
+                                  ),
+                                  availableTime != null
+                                      ? availableTime!.isNotEmpty
+                                          ? Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: availableTime!
+                                                  .map((i) => Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
+                                                          children: [
+                                                            AvailableTimeCard(
+                                                                availableTime:
+                                                                    i)
+                                                          ]))
+                                                  .toList())
+                                          : const SizedBox(
+                                              child: Text('No available time'),
+                                            )
+                                      : const SizedBox(
+                                          child: Text(
+                                              'Please select a doctor and a hospital'),
+                                        ),
+                                ],
+                              ),
                             ),
                             DateField(
                               selectedDate: selectedDate,
@@ -226,11 +358,17 @@ class _RescheduleScreenState extends State<RescheduleScreen> {
                                   ),
                                 ),
                                 child: Center(
-                                    child: Text(
-                                  "Submit",
-                                  style: TextStyles.regulerText
-                                      .copyWith(color: CustomColors.black),
-                                )),
+                                  child: isLoading
+                                      ? CircularProgressIndicator(
+                                          color: CustomColors.white,
+                                        )
+                                      : Text(
+                                          "Submit",
+                                          style: TextStyles.regulerText
+                                              .copyWith(
+                                                  color: CustomColors.black),
+                                        ),
+                                ),
                               ),
                             ),
                           ],

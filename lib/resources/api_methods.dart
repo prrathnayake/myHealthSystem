@@ -126,7 +126,7 @@ class APImethods {
         },
         body: jsonEncode(<String, String>{
           'scheduleID': scheduleID,
-          'doctorID': doctorID,
+          'staffID': doctorID,
           'patientUid': uid,
           'hospitalID': hospitalID,
           'dateNow': DateFormat('yyyy-MM-dd HH:mm:ss')
