@@ -178,22 +178,29 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
               const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => const DiseasePredicScreen()));
-                    },
-                    child: Text(
-                      'For quick checkup use our AI',
-                      style: TextStyles.textHeader1
-                          .copyWith(fontSize: 25, color: CustomColors.black),
+              Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5),
+                  color: CustomColors.bgColor,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => const DiseasePredicScreen()));
+                      },
+                      child: Text(
+                        'For quick checkup use our AI',
+                        style: TextStyles.textHeader1
+                            .copyWith(fontSize: 25, color: CustomColors.white),
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
               const SizedBox(height: 20),
               Row(
