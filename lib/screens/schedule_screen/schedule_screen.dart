@@ -54,6 +54,11 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                 style: TextStyles.textHeader1.copyWith(fontSize: 40),
               ),
               const SizedBox(height: 20),
+              Text(
+                'Upcomming appointments',
+                style: TextStyles.textHeader1.copyWith(fontSize: 30),
+              ),
+              const SizedBox(height: 20),
               Expanded(
                 child: schedules == null
                     ? const Center(child: CircularProgressIndicator())
