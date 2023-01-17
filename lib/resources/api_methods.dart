@@ -220,6 +220,18 @@ class APImethods {
     return hospitals;
   }
 
+  Future<List> getTopHospitals() async {
+    List hospitals;
+    http.Response response = await http.get(
+      Uri.parse('$api/hospitals/top'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+    hospitals = jsonDecode(response.body);
+    return hospitals;
+  }
+
   Future<List> getAvailableTime(
       {required String doctorID, required String hospitalID}) async {
     List availableTime;
