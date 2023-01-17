@@ -184,6 +184,18 @@ class APImethods {
     return doctors;
   }
 
+  Future<List> getTopDoctors() async {
+    List doctors;
+    http.Response response = await http.get(
+      Uri.parse('$api/doctors/top'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+    doctors = jsonDecode(response.body);
+    return doctors;
+  }
+
   Future<List> getDoctorsByID({required int id}) async {
     List doctors;
     http.Response response = await http.get(

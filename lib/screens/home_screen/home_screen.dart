@@ -48,7 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       isLoading = true;
     });
-    List data = await APImethods().getDoctors();
+    List data = await APImethods().getTopDoctors();
 
     setState(() {
       doctors = data;
