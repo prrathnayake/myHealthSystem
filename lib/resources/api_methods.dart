@@ -281,4 +281,27 @@ class APImethods {
     hospitals = jsonDecode(response.body);
     return hospitals;
   }
+
+  Future<void> createUserAccount(
+      {required String uid,
+      required String firstName,
+      required String nic,
+      required String lastName,
+      required String email,
+      required String username,
+      required String mobile}) async {
+    await http.post(Uri.parse('$api/patients/add'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{
+          'uid': uid,
+          'firstName': firstName,
+          'nic': nic,
+          'lastName': lastName,
+          'username': username,
+          'email': email,
+          'mobile': mobile,
+        }));
+  }
 }

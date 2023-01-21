@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:e_health/resources/api_methods.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:e_health/models/user.dart' as model;
 
@@ -66,6 +67,15 @@ class AuthMethods {
             .collection("users")
             .doc(userCredential.user!.uid)
             .set(user.toJson());
+
+        await APImethods().createUserAccount(
+            uid: userCredential.user!.uid,
+            nic: nic,
+            firstName: firstName,
+            lastName: lastName,
+            email: email,
+            username: username,
+            mobile: mobile);
 
         res = "success";
       }
