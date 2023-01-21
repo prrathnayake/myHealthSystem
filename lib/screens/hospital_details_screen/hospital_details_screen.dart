@@ -45,6 +45,10 @@ class _HospitalDetailsScreenState extends State<HospitalDetailsScreen> {
     super.initState();
   }
 
+  onPressBack() {
+    Navigator.of(context).pop();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,41 +57,71 @@ class _HospitalDetailsScreenState extends State<HospitalDetailsScreen> {
             ? const Center(child: CircularProgressIndicator())
             : Column(
                 children: <Widget>[
-                  // Container(
-                  //   width: double.infinity,
-                  //   height: 300,
-                  //   child: Image.network(
-                  //     imageUrl,
-                  //     fit: BoxFit.cover,
-                  //   ),
-                  // ),
+                  Stack(children: [
+                    Container(
+                      height: 300,
+                      width: double.infinity,
+                      decoration: const BoxDecoration(
+                        image: DecorationImage(
+                          fit: BoxFit.cover,
+                          image: AssetImage('assets/images/hospital.jpg'),
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                        top: 20,
+                        left: 10,
+                        child: IconButton(
+                          onPressed: onPressBack,
+                          icon: const Icon(
+                            Icons.arrow_back,
+                            size: 40,
+                          ),
+                        )),
+                  ]),
                   const SizedBox(height: 20),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Column(
                       children: <Widget>[
-                        Text(
-                          hospitals![0]['name'],
-                          style: const TextStyle(
-                            fontSize: 26,
-                            fontWeight: FontWeight.bold,
-                          ),
+                        Row(
+                          children: [
+                            Text(
+                              hospitals![0]['name'],
+                              style: const TextStyle(
+                                fontSize: 26,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
                         ),
                         const SizedBox(height: 10),
-                        Text(
-                          hospitals![0]['address'].toString(),
-                          style: const TextStyle(
-                            fontSize: 18,
-                            color: Colors.grey,
-                          ),
+                        Row(
+                          children: [
+                            const Icon(Icons.location_city),
+                            const SizedBox(width: 10),
+                            Text(
+                              hospitals![0]['address'].toString(),
+                              style: const TextStyle(
+                                fontSize: 18,
+                                color: Colors.grey,
+                              ),
+                            ),
+                          ],
                         ),
                         const SizedBox(height: 10),
-                        Text(
-                          hospitals![0]['mobile'],
-                          style: const TextStyle(
-                            fontSize: 18,
-                            color: Colors.grey,
-                          ),
+                        Row(
+                          children: [
+                            const Icon(Icons.call),
+                            const SizedBox(width: 10),
+                            Text(
+                              hospitals![0]['mobile'],
+                              style: const TextStyle(
+                                fontSize: 18,
+                                color: Colors.grey,
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
