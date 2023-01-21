@@ -32,15 +32,15 @@ class AuthMethods {
       RegExp regexMobile = RegExp(r'^[0]{1}[7]{1}[01245678]{1}[0-9]{7}$');
 
       if (!regexNIC.hasMatch(nic)) {
-        return res = "Pleace enter valid NIC number";
+        return res = "Please enter valid NIC number";
       }
 
       if (!regexMobile.hasMatch(mobile)) {
-        return res = "Pleace enter valid mobile number";
+        return res = "Please enter valid mobile number";
       }
 
       if (password != comfirmPassword) {
-        return res = "Pleace make sure your passwords match";
+        return res = "Please make sure your passwords match";
       }
 
       if (email.isNotEmpty ||
@@ -125,11 +125,11 @@ class AuthMethods {
       RegExp regexMobile = RegExp(r'^[0]{1}[7]{1}[01245678]{1}[0-9]{7}$');
 
       if (!regexNIC.hasMatch(nic)) {
-        return res = "Pleace enter valid NIC number";
+        return res = "please enter valid NIC number";
       }
 
       if (!regexMobile.hasMatch(mobile)) {
-        return res = "Pleace enter valid mobile number";
+        return res = "please enter valid mobile number";
       }
 
       _firestore.collection('users').doc(uid).update({
