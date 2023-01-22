@@ -37,7 +37,7 @@ class DoctorCard extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                 ),
                 Text(
-                  ' ${doctor['areaID']}',
+                  ' ${doctor['area']}',
                   style: TextStyle(color: Colors.grey.shade600),
                 ),
                 const SizedBox(height: 10),
