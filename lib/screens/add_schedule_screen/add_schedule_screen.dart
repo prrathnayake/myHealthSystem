@@ -145,7 +145,7 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
       return customStackBar(
           context: context,
           text:
-              'Doctor doesn\'t available in ${DateFormat('EEEE').format(selectedDate)}');
+              'Doctor doesn\'t available on ${DateFormat('EEEE').format(selectedDate)}');
     }
 
     if (startTime.hour > endTime.hour ||
