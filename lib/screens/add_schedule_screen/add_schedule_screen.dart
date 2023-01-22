@@ -155,8 +155,7 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
         isLoading = false;
       });
       return customStackBar(
-          context: context,
-          text: 'Please start Time cannot be greater than end Time');
+          context: context, text: 'End time cannot be before start time');
     }
 
     // schedules = getDoctorSchedules(selectedDate);
