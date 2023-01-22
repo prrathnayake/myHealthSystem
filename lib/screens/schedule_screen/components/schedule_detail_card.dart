@@ -2,7 +2,6 @@ import 'package:e_health/components/CustomStackBar.dart';
 import 'package:e_health/components/bottombar.dart';
 import 'package:e_health/resources/api_methods.dart';
 import 'package:e_health/screens/reschedule_screen.dart/reschedule_screen.dart';
-import 'package:e_health/screens/schedule_screen/schedule_screen.dart';
 import 'package:e_health/utils/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -16,7 +15,7 @@ class ScheduleDetailCard extends StatefulWidget {
 }
 
 class _ScheduleDetailCardState extends State<ScheduleDetailCard> {
-  cancelAppointment() async {
+  cancleAppointment() async {
     await APImethods().cancleAppointment(
         appointmentID: widget.schedule['scheduleID'].toString());
     Navigator.of(context).pushReplacement(MaterialPageRoute(
@@ -125,11 +124,11 @@ class _ScheduleDetailCardState extends State<ScheduleDetailCard> {
                                 actions: <Widget>[
                                   TextButton(
                                     onPressed: () =>
-                                        Navigator.pop(context, 'Cancel'),
-                                    child: const Text('Cancel'),
+                                        Navigator.pop(context, 'cancle'),
+                                    child: const Text('Cancle'),
                                   ),
                                   TextButton(
-                                      onPressed: cancelAppointment,
+                                      onPressed: cancleAppointment,
                                       child: const Text('Sure')),
                                 ],
                               ),
