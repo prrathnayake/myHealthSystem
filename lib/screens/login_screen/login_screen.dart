@@ -113,15 +113,15 @@ class _LoginScreenState extends State<LoginScreen> {
                         labelStyle: TextStyles.inputlabel,
                         hintText: 'Enter your password'),
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      TextButton(
-                        onPressed: () {},
-                        child: const Text('Forget Password?'),
-                      ),
-                    ],
-                  ),
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.end,
+                  //   children: [
+                  //     TextButton(
+                  //       onPressed: () {},
+                  //       child: const Text('Forget Password?'),
+                  //     ),
+                  //   ],
+                  // ),
                   const SizedBox(height: 10),
                   GestureDetector(
                     onTap: signIn,
