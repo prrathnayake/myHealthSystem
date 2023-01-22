@@ -110,22 +110,22 @@ class _ScheduleDetailCardState extends State<ScheduleDetailCard> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   GestureDetector(
-                    onTap: widget.schedule['status'] == 'Cancled'
+                    onTap: widget.schedule['status'] == 'Cancelled'
                         ? () {
                             customStackBar(
                                 context: context,
-                                text: 'You appointment is already cancled');
+                                text: 'You appointment is already cancelled');
                           }
                         : () => showDialog<String>(
                               context: context,
                               builder: (BuildContext context) => AlertDialog(
                                 content: const Text(
-                                    'Are you sure, Do you want to cansle this appointment?'),
+                                    'Are you sure, Do you want to cancel this appointment?'),
                                 actions: <Widget>[
                                   TextButton(
                                     onPressed: () =>
-                                        Navigator.pop(context, 'cancle'),
-                                    child: const Text('Cancle'),
+                                        Navigator.pop(context, 'cancel'),
+                                    child: const Text('Cancel'),
                                   ),
                                   TextButton(
                                       onPressed: cancleAppointment,
@@ -145,12 +145,12 @@ class _ScheduleDetailCardState extends State<ScheduleDetailCard> {
                   ),
                   const SizedBox(width: 20),
                   GestureDetector(
-                    onTap: widget.schedule['status'] == 'Cancled'
+                    onTap: widget.schedule['status'] == 'Canclled'
                         ? () {
                             customStackBar(
                                 context: context,
                                 text:
-                                    'This appointment is cancled. You cannot reschedule this.');
+                                    'This appointment is cancelled. You cannot reschedule this.');
                           }
                         : () {
                             Navigator.of(context).push(MaterialPageRoute(
