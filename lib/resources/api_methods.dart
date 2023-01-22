@@ -150,7 +150,7 @@ class APImethods {
     required String appointmentID,
   }) async {
     await http.post(
-      Uri.parse('$api/schedules/cancle?id=$appointmentID'),
+      Uri.parse('$api/schedules/cancel?id=$appointmentID'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
