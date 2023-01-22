@@ -55,7 +55,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
               ),
               const SizedBox(height: 20),
               Text(
-                'Upcomming appointments',
+                'Upcoming appointments',
                 style: TextStyles.textHeader1.copyWith(fontSize: 30),
               ),
               const SizedBox(height: 20),
