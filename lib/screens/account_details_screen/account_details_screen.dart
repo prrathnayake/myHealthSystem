@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:e_health/components/bottombar.dart';
 import 'package:e_health/resources/auth_methods.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -59,7 +60,10 @@ class _AccountDetailsScreenState extends State<AccountDetailsScreen> {
       model.User userCredentials = await AuthMethods().getUserDetails();
       String json = jsonEncode(userCredentials);
       prefs.setString('userCredentials', json);
-      Navigator.of(context).pop();
+      Navigator.of(context).pushReplacement(MaterialPageRoute(
+          builder: (context) => const BottomBar(
+                passIndex: 3,
+              )));
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
