@@ -133,7 +133,7 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
           return customStackBar(
               context: context,
               text:
-                  'Doctor only available at ${DateFormat('hh:mm a').format(availableStartDateTime)} to ${DateFormat('hh:mm a').format(availableEndDateTime)}');
+                  'Doctor isn\'t available from ${DateFormat('hh:mm a').format(availableStartDateTime)} to ${DateFormat('hh:mm a').format(availableEndDateTime)}');
         }
       }
     }
