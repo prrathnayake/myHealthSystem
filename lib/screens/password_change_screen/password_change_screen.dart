@@ -1,7 +1,9 @@
 import 'package:e_health/resources/auth_methods.dart';
 import 'package:e_health/utils/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+import '../login_screen/login_screen.dart';
 import '../../utils/styles.dart';
 
 class PasswordChangeScreen extends StatefulWidget {
@@ -31,7 +33,11 @@ class _PasswordChangeScreenState extends State<PasswordChangeScreen> {
     }
 
     if (res == 'success') {
-      Navigator.of(context).pop();
+      await AuthMethods().signOut();
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.remove("userCredentials");
+      Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => const LoginScreen()));
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
