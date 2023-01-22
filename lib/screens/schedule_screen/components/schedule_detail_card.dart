@@ -70,7 +70,7 @@ class _ScheduleDetailCardState extends State<ScheduleDetailCard> {
                     children: [
                       const Icon(Icons.event_outlined),
                       const SizedBox(width: 5),
-                      Text(DateFormat.yMEd().format(
+                      Text(DateFormat('dd-MM-yyyy').format(
                           DateTime.parse(widget.schedule['appointmentDate'])
                               .toLocal()))
                     ],
